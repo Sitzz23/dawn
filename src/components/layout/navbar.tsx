@@ -12,9 +12,7 @@ const Navbar = () => {
       </Link>
       <div className="ml-auto flex items-center space-x-4">
         <Link href="/signin">
-          <Button className="relative rounded-lg font-urban font-bold">
-            Sign In
-          </Button>
+          <Button className="relative  font-urban font-bold">Sign In</Button>
         </Link>
       </div>
     </nav>

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import Balancer from "react-wrap-balancer";
 
 export default function Home() {
@@ -21,6 +22,10 @@ export default function Home() {
               coders from around the globe
             </Balancer>
           </p>
+
+          <div className="flex  justify-center space-x-2  md:space-x-4">
+            <Button className="font-urban font-bold">Get started</Button>
+          </div>
         </div>
       </section>
     </>
