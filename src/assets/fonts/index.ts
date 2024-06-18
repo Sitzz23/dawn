@@ -11,7 +11,7 @@ export const fontUrban = Urbanist({
   variable: "--font-urban",
 });
 
-export const figtree = Urbanist({
+export const fontFigtree = Figtree({
   subsets: ["latin"],
   variable: "--font-figtree",
 });
