@@ -1,5 +1,6 @@
 import { Inter as FontSans, Urbanist } from "next/font/google";
 import { Figtree } from "next/font/google";
+import localFont from "next/font/local";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -14,4 +15,9 @@ export const fontUrban = Urbanist({
 export const fontFigtree = Figtree({
   subsets: ["latin"],
   variable: "--font-figtree",
+});
+
+export const fontHeading = localFont({
+  src: "./CalSans SemiBold.woff2",
+  variable: "--font-heading",
 });
