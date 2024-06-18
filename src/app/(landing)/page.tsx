@@ -14,7 +14,7 @@ export default function Home() {
             </Balancer>
           </h1>
 
-          <p className="max-w-[45rem] leading-normal text-muted-foreground  sm:text-xl sm:leading-8 font-figtree">
+          <p className="max-w-[45rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8 font-figtree">
             <Balancer>
               Enter the exhilarating world where coding meets competition in
               virtual arenas that host real-time challenges against fellow
