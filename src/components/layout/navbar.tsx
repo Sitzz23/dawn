@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
+import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 
 const Navbar = () => {
   return (
@@ -11,9 +12,9 @@ const Navbar = () => {
         </span>
       </Link>
       <div className="ml-auto flex items-center space-x-4">
-        <Link href="/signin">
-          <Button className="relative  font-urban font-bold">Sign In</Button>
-        </Link>
+        <Button className="relative  font-urban font-bold" asChild>
+          <LoginLink>Sign In</LoginLink>
+        </Button>
       </div>
     </nav>
   );

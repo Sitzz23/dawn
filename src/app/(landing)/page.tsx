@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import Balancer from "react-wrap-balancer";
 
 export default function Home() {
@@ -24,7 +25,9 @@ export default function Home() {
           </p>
 
           <div className="flex  justify-center space-x-2  md:space-x-4">
-            <Button className="font-urban font-bold">Get started</Button>
+            <Button className="font-urban font-bold" asChild>
+              <RegisterLink>Get started </RegisterLink>
+            </Button>
           </div>
         </div>
       </section>
