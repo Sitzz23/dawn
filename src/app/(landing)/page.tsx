@@ -1,8 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import {
+  LoginLink,
+  RegisterLink,
+} from "@kinde-oss/kinde-auth-nextjs/components";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Balancer from "react-wrap-balancer";
 
-export default function Home() {
+export default async function Home() {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
   return (
     <>
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
@@ -25,9 +31,15 @@ export default function Home() {
           </p>
 
           <div className="flex  justify-center space-x-2  md:space-x-4">
-            <Button className="font-urban font-bold" asChild>
-              <RegisterLink>Get started </RegisterLink>
-            </Button>
+            {user ? (
+              <Button className="font-urban font-bold" asChild>
+                <LoginLink>Get started</LoginLink>
+              </Button>
+            ) : (
+              <Button className="font-urban font-bold" asChild>
+                <RegisterLink>Get started</RegisterLink>
+              </Button>
+            )}
           </div>
         </div>
       </section>
