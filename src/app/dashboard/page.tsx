@@ -85,14 +85,14 @@ const page = () => {
             <Button className="font-urban font-bold">Create Battle</Button>
           </CardFooter>
         </Card>
-        <Card className="w-[350px]">
+        <Card className="w-[350px] flex flex-col">
           <CardHeader>
             <CardTitle>Enter the battle</CardTitle>
             <CardDescription>
               Challenge awaits! Join an existing battle.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-grow">
             <form>
               <div className="grid w-full items-center gap-4">
                 <div className="flex flex-col space-y-1.5">
@@ -102,7 +102,7 @@ const page = () => {
               </div>
             </form>
           </CardContent>
-          <CardFooter className="flex justify-between">
+          <CardFooter className="flex justify-between ">
             <Button variant="outline" className="font-urban font-bold">
               Cancel
             </Button>
