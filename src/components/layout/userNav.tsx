@@ -1,12 +1,6 @@
 "use client";
 import Link from "next/link";
-import {
-  CreditCard,
-  LayoutDashboard,
-  LogOut,
-  Settings,
-  User,
-} from "lucide-react";
+import { LayoutDashboard, LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
