@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/shared/themeProvider";
 import { fontSans, fontUrban, fontFigtree, fontHeading } from "@/assets/fonts";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Dawn",
@@ -33,6 +34,7 @@ export default function RootLayout({
           // disableTransitionOnChange
         >
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
