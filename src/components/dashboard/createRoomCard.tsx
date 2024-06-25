@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Card,
@@ -17,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { toast } from "sonner";
 
 const CreateRoomCard = () => {
   return (
@@ -81,7 +84,20 @@ const CreateRoomCard = () => {
         <Button variant="outline" className="font-urban font-bold">
           Cancel
         </Button>
-        <Button className="font-urban font-bold">Create Battle</Button>
+        <Button
+          className="font-urban font-bold"
+          onClick={() =>
+            toast.success("Room has been created", {
+              description: "Room ID: bla bla bla bla",
+              action: {
+                label: "Copy ID",
+                onClick: () => navigator.clipboard.writeText("bla bla bla"),
+              },
+            })
+          }
+        >
+          Create Battle
+        </Button>
       </CardFooter>
     </Card>
   );
