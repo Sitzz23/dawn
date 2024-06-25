@@ -35,7 +35,7 @@ const page = () => {
                 </div>
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="maxPlayers">Max Players</Label>
-                  <Select>
+                  <Select defaultValue={"2"}>
                     <SelectTrigger id="maxPlayers">
                       <SelectValue placeholder="Select players" />
                     </SelectTrigger>
@@ -49,7 +49,7 @@ const page = () => {
                 </div>
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="difficulty">Difficulty</Label>
-                  <Select>
+                  <Select defaultValue="easy">
                     <SelectTrigger id="difficulty">
                       <SelectValue placeholder="Select difficulty" />
                     </SelectTrigger>
@@ -63,7 +63,7 @@ const page = () => {
                 </div>
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="roomDuration">Room Duration</Label>
-                  <Select>
+                  <Select defaultValue="15">
                     <SelectTrigger id="roomDuration">
                       <SelectValue placeholder="Select duration" />
                     </SelectTrigger>
