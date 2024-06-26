@@ -5,6 +5,7 @@ import { fontSans, fontUrban, fontFigtree, fontHeading } from "@/assets/fonts";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { SocketProvider } from "@/lib/socketProvider";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Dawn",
@@ -17,28 +18,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
-      <body
-        className={cn(
-          "min-h-screen bg-background antialiased font-figtree",
-          fontSans.variable,
-          fontUrban.variable,
-          fontFigtree.variable,
-          fontHeading.variable
-        )}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          // disableTransitionOnChange
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning={true}>
+        <body
+          className={cn(
+            "min-h-screen bg-background antialiased font-figtree",
+            fontSans.variable,
+            fontUrban.variable,
+            fontFigtree.variable,
+            fontHeading.variable
+          )}
         >
-          <SocketProvider>
-            {children}
-            <Toaster />
-          </SocketProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            // disableTransitionOnChange
+          >
+            <SocketProvider>
+              {children}
+              <Toaster />
+            </SocketProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
