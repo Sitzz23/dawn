@@ -28,20 +28,19 @@ export default function RootLayout({
           fontHeading.variable
         )}
       >
-        {" "}
-        <ConvexClientProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            // disableTransitionOnChange
-          >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          // disableTransitionOnChange
+        >
+          <ConvexClientProvider>
             {/* <SocketProvider> */}
             {children}
             <Toaster />
             {/* </SocketProvider> */}
-          </ThemeProvider>{" "}
-        </ConvexClientProvider>
+          </ConvexClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

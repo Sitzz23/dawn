@@ -1,36 +1,41 @@
 import Link from "next/link";
 import React from "react";
 import { Button } from "../../ui/button";
-// import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
-// import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { UserNav } from "./userNav";
+// import { UserNav } from "./userNav";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+// import { currentUser } from "@clerk/nextjs/server";
 
-const Navbar = async () => {
-  // const { getUser } = getKindeServerSession();
-  // const user = await getUser();
+const Navbar = () => {
+  // const user = await currentUser();
   return (
-    <nav className="sticky top-0 z-30 flex h-16 items-center gap-10 border-b bg-background/60 px-4 backdrop-blur-xl transition-all">
+    <div className="sticky top-0 z-30 flex h-16 items-center gap-10 border-b bg-background/60 px-4 backdrop-blur-xl transition-all">
       <Link href="/" className="flex items-center space-x-2">
         <span className="inline-block font-urban text-xl font-bold">
           ✦ Dawn
         </span>
       </Link>
       <div className="ml-auto flex items-center space-x-4">
-        {/* {user ? (
-          <UserNav
-            email={user.email as string}
-            name={user.given_name as string}
-            userImage={
-              user.picture ?? `https://avatar.vercel.sh/${user.given_name}`
-            }
-          />
-        ) : (
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+        <SignedOut>
           <Button className="relative  font-urban font-bold" asChild>
-            <LoginLink>Sign In</LoginLink>
+            <SignInButton>Sign In</SignInButton>
           </Button>
+        </SignedOut>
+        {/* {user ? (
+          // <UserNav
+          //   email={user.emailAddresses[0].emailAddress as string}
+          //   name={user.fullName as string}
+          //   userImage={
+          //     user.imageUrl ?? `https://avatar.vercel.sh/${user.fullName}`
+          //   }
+          // />
+        ) : (
+         
         )} */}
       </div>
-    </nav>
+    </div>
   );
 };
 

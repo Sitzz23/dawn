@@ -14,8 +14,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { SignOutButton } from "@clerk/nextjs";
 
 interface navProps {
   email: string;
@@ -30,7 +29,7 @@ export const UserNav = ({ email, name, userImage }: navProps) => {
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
             <AvatarImage src={userImage} alt="User Image" />
-            <AvatarFallback>{name.slice(0, 3)}</AvatarFallback>
+            <AvatarFallback>{name.slice(0, 2)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -75,11 +74,13 @@ export const UserNav = ({ email, name, userImage }: navProps) => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <LogoutLink>
-            <LogOut className="mr-2 h-4 w-4" />
-            <span>Log out</span>
-            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-          </LogoutLink>
+          <SignOutButton>
+            <>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+              <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            </>
+          </SignOutButton>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
