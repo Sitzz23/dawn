@@ -1,13 +1,13 @@
-import {
-  LoginLink,
-  RegisterLink,
-} from "@kinde-oss/kinde-auth-nextjs/components";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+// import {
+//   LoginLink,
+//   RegisterLink,
+// } from "@kinde-oss/kinde-auth-nextjs/components";
+// import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Balancer from "react-wrap-balancer";
 
 export default async function Home() {
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
+  // const { getUser } = getKindeServerSession();
+  // const user = await getUser();
   return (
     <>
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
@@ -30,7 +30,7 @@ export default async function Home() {
           </p>
 
           <div className="flex  justify-center space-x-2  md:space-x-4">
-            {user ? (
+            {/* {user ? (
               <button className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px font-semibold leading-6  text-white inline-block">
                 <span className="absolute inset-0 overflow-hidden rounded-full">
                   <span className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500/0 via-violet-500/90 to-purple-500/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
@@ -50,7 +50,7 @@ export default async function Home() {
                 </div>
                 <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-indigo-500/0 via-violet-400/90 to-purple-500/0 transition-opacity duration-500 group-hover:opacity-40"></span>
               </button>
-            )}
+            )} */}
           </div>
         </div>
       </section>

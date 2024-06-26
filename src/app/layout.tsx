@@ -4,8 +4,8 @@ import { ThemeProvider } from "@/components/shared/themeProvider";
 import { fontSans, fontUrban, fontFigtree, fontHeading } from "@/assets/fonts";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
-import { SocketProvider } from "@/lib/socketProvider";
-import { ClerkProvider } from "@clerk/nextjs";
+// import { SocketProvider } from "@/lib/socketProvider";
+import { ConvexClientProvider } from "@/lib/clerkProvider";
 
 export const metadata: Metadata = {
   title: "Dawn",
@@ -18,30 +18,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning={true}>
-        <body
-          className={cn(
-            "min-h-screen bg-background antialiased font-figtree",
-            fontSans.variable,
-            fontUrban.variable,
-            fontFigtree.variable,
-            fontHeading.variable
-          )}
-        >
+    <html lang="en" suppressHydrationWarning={true}>
+      <body
+        className={cn(
+          "min-h-screen bg-background antialiased font-figtree",
+          fontSans.variable,
+          fontUrban.variable,
+          fontFigtree.variable,
+          fontHeading.variable
+        )}
+      >
+        {" "}
+        <ConvexClientProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
             enableSystem
             // disableTransitionOnChange
           >
-            <SocketProvider>
-              {children}
-              <Toaster />
-            </SocketProvider>
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+            {/* <SocketProvider> */}
+            {children}
+            <Toaster />
+            {/* </SocketProvider> */}
+          </ThemeProvider>{" "}
+        </ConvexClientProvider>
+      </body>
+    </html>
   );
 }
