@@ -1,7 +1,16 @@
-import React from "react";
+"use client";
+import { useSocket } from "@/lib/socketProvider";
+import React, { useEffect } from "react";
 
 const Lobby = () => {
-  return <div>ola, i&apos;m Lobby</div>;
+  const { isConnected } = useSocket();
+
+  return (
+    <div>
+      {isConnected ? <p>connected hai bhai</p> : <p>not connected hai bhai</p>}
+      ola, i&apos;m Lobby
+    </div>
+  );
 };
 
 export default Lobby;

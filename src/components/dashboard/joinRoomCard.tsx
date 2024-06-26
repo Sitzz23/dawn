@@ -10,6 +10,7 @@ import {
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 const JoinRoomCard = () => {
   return (
@@ -34,7 +35,9 @@ const JoinRoomCard = () => {
         <Button variant="outline" className="font-urban font-bold">
           Cancel
         </Button>
-        <Button className="font-urban font-bold">Engage!</Button>
+        <Button className="font-urban font-bold" asChild>
+          <Link href={"/lobby"}>Engage!</Link>
+        </Button>
       </CardFooter>
     </Card>
   );

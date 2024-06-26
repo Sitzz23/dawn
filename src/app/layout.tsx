@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/shared/themeProvider";
 import { fontSans, fontUrban, fontFigtree, fontHeading } from "@/assets/fonts";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
+import { SocketProvider } from "@/lib/socketProvider";
 
 export const metadata: Metadata = {
   title: "Dawn",
@@ -25,7 +26,6 @@ export default function RootLayout({
           fontFigtree.variable,
           fontHeading.variable
         )}
-        suppressHydrationWarning={true}
       >
         <ThemeProvider
           attribute="class"
@@ -33,8 +33,10 @@ export default function RootLayout({
           enableSystem
           // disableTransitionOnChange
         >
-          {children}
-          <Toaster />
+          <SocketProvider>
+            {children}
+            <Toaster />
+          </SocketProvider>
         </ThemeProvider>
       </body>
     </html>
