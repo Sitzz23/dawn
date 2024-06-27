@@ -21,15 +21,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useMutation } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 
 interface FormData {
   battleName: string;
   maxPlayers: string;
-  difficulty: string;
+  difficulty: "easy" | "medium" | "hard";
   roomDuration: string;
 }
 
 const BattleCreationForm: React.FC = () => {
+  const createRoom = useMutation(api.room.createRoom);
+
   const initialFormData: FormData = {
     battleName: "",
     maxPlayers: "2",
@@ -77,7 +81,12 @@ const BattleCreationForm: React.FC = () => {
     if (validateBattleName(formData.battleName)) {
       console.log("Form submitted:", formData);
       toast.success("Battle created successfully!");
-      // Here you would typically send the data to your backend
+      createRoom({
+        maxPlayers: Number(formData.maxPlayers),
+        difficulty: formData.difficulty,
+        roomDuration: Number(formData.roomDuration),
+        battleName: formData.battleName,
+      });
     } else {
       console.log("Form has errors. Please check the battle name.");
     }
@@ -144,7 +153,6 @@ const BattleCreationForm: React.FC = () => {
                   <SelectItem value="easy">Easy</SelectItem>
                   <SelectItem value="medium">Medium</SelectItem>
                   <SelectItem value="hard">Hard</SelectItem>
-                  <SelectItem value="expert">Expert</SelectItem>
                 </SelectContent>
               </Select>
             </div>
