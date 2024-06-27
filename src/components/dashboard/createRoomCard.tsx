@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, ChangeEvent } from "react";
 import {
   Card,
   CardContent,
@@ -8,20 +8,76 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
-import { toast } from "sonner";
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
-const CreateRoomCard = () => {
+interface FormData {
+  battleName: string;
+  maxPlayers: string;
+  difficulty: string;
+  roomDuration: string;
+}
+
+const BattleCreationForm: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>({
+    battleName: "",
+    maxPlayers: "2",
+    difficulty: "easy",
+    roomDuration: "15",
+  });
+
+  const [battleNameError, setBattleNameError] = useState<string | null>(null);
+
+  const validateBattleName = (name: string): boolean => {
+    if (!name.trim()) {
+      setBattleNameError("Battle name is required");
+      return false;
+    } else if (name.length > 50) {
+      setBattleNameError("Battle name must be 50 characters or less");
+      return false;
+    }
+    setBattleNameError(null);
+    return true;
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+    if (id === "battleName") {
+      validateBattleName(value);
+    }
+  };
+
+  const handleSelectChange = (id: keyof FormData, value: string) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateBattleName(formData.battleName)) {
+      console.log("Form submitted:", formData);
+      // Here you would typically send the data to your backend
+    } else {
+      console.log("Form has errors. Please check the battle name.");
+    }
+  };
+
   return (
     <Card className="w-[450px]">
       <CardHeader>
@@ -29,15 +85,30 @@ const CreateRoomCard = () => {
         <CardDescription>Set the stage for an epic battle!</CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="battleName">Battle Name</Label>
-              <Input id="battleName" placeholder="Enter battle name" />
+              <Input
+                id="battleName"
+                placeholder="Enter battle name"
+                value={formData.battleName}
+                onChange={handleInputChange}
+              />
+              {battleNameError && (
+                <Alert variant="default">
+                  <AlertDescription>{battleNameError}</AlertDescription>
+                </Alert>
+              )}
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="maxPlayers">Max Players</Label>
-              <Select defaultValue={"2"}>
+              <Select
+                value={formData.maxPlayers}
+                onValueChange={(value) =>
+                  handleSelectChange("maxPlayers", value)
+                }
+              >
                 <SelectTrigger id="maxPlayers">
                   <SelectValue placeholder="Select players" />
                 </SelectTrigger>
@@ -51,7 +122,12 @@ const CreateRoomCard = () => {
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="difficulty">Difficulty</Label>
-              <Select defaultValue="easy">
+              <Select
+                value={formData.difficulty}
+                onValueChange={(value) =>
+                  handleSelectChange("difficulty", value)
+                }
+              >
                 <SelectTrigger id="difficulty">
                   <SelectValue placeholder="Select difficulty" />
                 </SelectTrigger>
@@ -65,7 +141,12 @@ const CreateRoomCard = () => {
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="roomDuration">Room Duration</Label>
-              <Select defaultValue="15">
+              <Select
+                value={formData.roomDuration}
+                onValueChange={(value) =>
+                  handleSelectChange("roomDuration", value)
+                }
+              >
                 <SelectTrigger id="roomDuration">
                   <SelectValue placeholder="Select duration" />
                 </SelectTrigger>
@@ -84,18 +165,7 @@ const CreateRoomCard = () => {
         <Button variant="outline" className="font-urban font-bold">
           Cancel
         </Button>
-        <Button
-          className="font-urban font-bold"
-          onClick={() =>
-            toast.success("Room has been created", {
-              description: "Room ID: bla bla bla bla",
-              action: {
-                label: "Copy ID",
-                onClick: () => navigator.clipboard.writeText("bla bla bla"),
-              },
-            })
-          }
-        >
+        <Button className="font-urban font-bold" onClick={handleSubmit}>
           Create Battle
         </Button>
       </CardFooter>
@@ -103,4 +173,4 @@ const CreateRoomCard = () => {
   );
 };
 
-export default CreateRoomCard;
+export default BattleCreationForm;
