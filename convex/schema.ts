@@ -6,12 +6,16 @@ export default defineSchema({
     name: v.string(),
     pictureUrl: v.string(),
     playerId: v.string(),
+    wins: v.number(),
+    losses: v.number(),
+    ties: v.number(),
   }),
 
   room: defineTable({
     name: v.string(),
-    hostId: v.id("user"),
-    playerIds: v.array(v.id("user")),
+    roomId: v.string(),
+    hostId: v.string(),
+    playerIds: v.array(v.string()),
     startedAt: v.optional(v.number()),
     completedAt: v.optional(v.number()),
     status: v.union(
