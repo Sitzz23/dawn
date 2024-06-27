@@ -38,7 +38,6 @@ const JoinRoomCard = () => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setBattleCode(value);
-    validateBattleCode(value);
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -50,6 +49,11 @@ const JoinRoomCard = () => {
     } else {
       console.log("Invalid battle code");
     }
+  };
+
+  const handleCancel = () => {
+    setBattleCode("");
+    setBattleCodeError(false);
   };
 
   return (
@@ -79,7 +83,11 @@ const JoinRoomCard = () => {
         </form>
       </CardContent>
       <CardFooter className="flex justify-between ">
-        <Button variant="outline" className="font-urban font-bold">
+        <Button
+          variant="outline"
+          className="font-urban font-bold"
+          onClick={handleCancel}
+        >
           Cancel
         </Button>
         <Button className="font-urban font-bold" onClick={handleSubmit}>

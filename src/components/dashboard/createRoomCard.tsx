@@ -30,12 +30,14 @@ interface FormData {
 }
 
 const BattleCreationForm: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const initialFormData: FormData = {
     battleName: "",
     maxPlayers: "2",
     difficulty: "easy",
     roomDuration: "15",
-  });
+  };
+
+  const [formData, setFormData] = useState<FormData>(initialFormData);
   const [battleNameError, setBattleNameError] = useState(false);
 
   const validateBattleName = (name: string): boolean => {
@@ -58,9 +60,9 @@ const BattleCreationForm: React.FC = () => {
       ...prevData,
       [id]: value,
     }));
-    if (id === "battleName") {
-      validateBattleName(value);
-    }
+    // if (id === "battleName") {
+    //   validateBattleName(value);
+    // }
   };
 
   const handleSelectChange = (id: keyof FormData, value: string) => {
@@ -79,6 +81,12 @@ const BattleCreationForm: React.FC = () => {
     } else {
       console.log("Form has errors. Please check the battle name.");
     }
+  };
+
+  const handleCancel = () => {
+    setFormData(initialFormData);
+    setBattleNameError(false);
+    toast.info("Form reset");
   };
 
   return (
@@ -163,7 +171,11 @@ const BattleCreationForm: React.FC = () => {
         </form>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" className="font-urban font-bold">
+        <Button
+          variant="outline"
+          className="font-urban font-bold"
+          onClick={handleCancel}
+        >
           Cancel
         </Button>
         <Button className="font-urban font-bold" onClick={handleSubmit}>
