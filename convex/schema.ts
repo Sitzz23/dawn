@@ -23,5 +23,12 @@ export default defineSchema({
       v.literal("in_progress"),
       v.literal("completed")
     ),
+    maxPlayers: v.number(),
+    difficulty: v.union(
+      v.literal("easy"),
+      v.literal("medium"),
+      v.literal("hard")
+    ),
+    roomDuration: v.number(),
   }),
 });
