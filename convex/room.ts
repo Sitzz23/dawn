@@ -1,4 +1,4 @@
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 import { v4 as uuidv4 } from "uuid";
 
@@ -31,6 +31,17 @@ export const createRoom = mutation({
       roomDuration: args.roomDuration,
     });
 
+    return room;
+  },
+});
+
+export const getRoomDetails = query({
+  args: { roomId: v.id("room") },
+  handler: async (ctx, args) => {
+    const room = await ctx.db.get(args.roomId);
+    if (!room) {
+      throw new Error("Room not found");
+    }
     return room;
   },
 });

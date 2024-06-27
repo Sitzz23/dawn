@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/shared/themeProvider";
 import { fontSans, fontUrban, fontFigtree, fontHeading } from "@/assets/fonts";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
-// import { SocketProvider } from "@/lib/socketProvider";
+import { SocketProvider } from "@/lib/socketProvider";
 import { ConvexClientProvider } from "@/lib/clerkProvider";
 
 export const metadata: Metadata = {
@@ -36,8 +36,8 @@ export default function RootLayout({
         >
           <ConvexClientProvider>
             {/* <SocketProvider> */}
-            {children}
-            <Toaster />
+              {children}
+              <Toaster />
             {/* </SocketProvider> */}
           </ConvexClientProvider>
         </ThemeProvider>
