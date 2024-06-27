@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 interface FormData {
   battleName: string;
@@ -35,15 +36,19 @@ const BattleCreationForm: React.FC = () => {
     difficulty: "easy",
     roomDuration: "15",
   });
+  const [battleNameError, setBattleNameError] = useState(false);
 
   const validateBattleName = (name: string): boolean => {
     if (!name.trim()) {
       toast.error("Battle name is required");
+      setBattleNameError(true);
       return false;
     } else if (name.length > 50) {
       toast.error("Battle name must be 10 characters or less");
+      setBattleNameError(true);
       return false;
     }
+    setBattleNameError(false);
     return true;
   };
 
@@ -53,6 +58,9 @@ const BattleCreationForm: React.FC = () => {
       ...prevData,
       [id]: value,
     }));
+    if (id === "battleName") {
+      validateBattleName(value);
+    }
   };
 
   const handleSelectChange = (id: keyof FormData, value: string) => {
@@ -89,6 +97,9 @@ const BattleCreationForm: React.FC = () => {
                 placeholder="Enter battle name"
                 value={formData.battleName}
                 onChange={handleInputChange}
+                className={cn(
+                  battleNameError && "border-red-500 focus-visible:ring-red-500"
+                )}
               />
             </div>
             <div className="flex flex-col space-y-1.5">
