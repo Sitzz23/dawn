@@ -21,9 +21,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import useApiMutation from "@/hooks/useApiMutation";
+import { useRouter } from "next/navigation";
 
 interface FormData {
   battleName: string;
@@ -34,6 +34,7 @@ interface FormData {
 
 const BattleCreationForm: React.FC = () => {
   const { mutate, pending } = useApiMutation(api.room.createRoom);
+  const router = useRouter();
 
   const initialFormData: FormData = {
     battleName: "",
@@ -89,6 +90,7 @@ const BattleCreationForm: React.FC = () => {
       })
         .then((id) => {
           toast.success("Battle created!");
+          router.push(`/room/${id}`);
         })
         .catch(() => toast.error("Failed to create room"));
     } else {
