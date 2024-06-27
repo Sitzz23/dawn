@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "sonner";
 
 interface FormData {
   battleName: string;
@@ -36,17 +36,14 @@ const BattleCreationForm: React.FC = () => {
     roomDuration: "15",
   });
 
-  const [battleNameError, setBattleNameError] = useState<string | null>(null);
-
   const validateBattleName = (name: string): boolean => {
     if (!name.trim()) {
-      setBattleNameError("Battle name is required");
+      toast.error("Battle name is required");
       return false;
     } else if (name.length > 50) {
-      setBattleNameError("Battle name must be 50 characters or less");
+      toast.error("Battle name must be 10 characters or less");
       return false;
     }
-    setBattleNameError(null);
     return true;
   };
 
@@ -56,9 +53,6 @@ const BattleCreationForm: React.FC = () => {
       ...prevData,
       [id]: value,
     }));
-    if (id === "battleName") {
-      validateBattleName(value);
-    }
   };
 
   const handleSelectChange = (id: keyof FormData, value: string) => {
@@ -72,6 +66,7 @@ const BattleCreationForm: React.FC = () => {
     e.preventDefault();
     if (validateBattleName(formData.battleName)) {
       console.log("Form submitted:", formData);
+      toast.success("Battle created successfully!");
       // Here you would typically send the data to your backend
     } else {
       console.log("Form has errors. Please check the battle name.");
@@ -95,11 +90,6 @@ const BattleCreationForm: React.FC = () => {
                 value={formData.battleName}
                 onChange={handleInputChange}
               />
-              {battleNameError && (
-                <Alert variant="default">
-                  <AlertDescription>{battleNameError}</AlertDescription>
-                </Alert>
-              )}
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="maxPlayers">Max Players</Label>
