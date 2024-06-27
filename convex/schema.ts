@@ -13,7 +13,6 @@ export default defineSchema({
 
   room: defineTable({
     name: v.string(),
-    roomId: v.string(),
     hostId: v.string(),
     playerIds: v.array(v.string()),
     startedAt: v.optional(v.number()),
