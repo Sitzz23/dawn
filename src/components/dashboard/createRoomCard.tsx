@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import useApiMutation from "@/hooks/useApiMutation";
 
 interface FormData {
   battleName: string;
@@ -32,7 +33,7 @@ interface FormData {
 }
 
 const BattleCreationForm: React.FC = () => {
-  const createRoom = useMutation(api.room.createRoom);
+  const { mutate, pending } = useApiMutation(api.room.createRoom);
 
   const initialFormData: FormData = {
     battleName: "",
@@ -80,13 +81,16 @@ const BattleCreationForm: React.FC = () => {
     e.preventDefault();
     if (validateBattleName(formData.battleName)) {
       console.log("Form submitted:", formData);
-      toast.success("Battle created successfully!");
-      createRoom({
+      mutate({
         maxPlayers: Number(formData.maxPlayers),
         difficulty: formData.difficulty,
         roomDuration: Number(formData.roomDuration),
         battleName: formData.battleName,
-      });
+      })
+        .then((id) => {
+          toast.success("Battle created!");
+        })
+        .catch(() => toast.error("Failed to create room"));
     } else {
       console.log("Form has errors. Please check the battle name.");
     }
@@ -186,7 +190,11 @@ const BattleCreationForm: React.FC = () => {
         >
           Cancel
         </Button>
-        <Button className="font-urban font-bold" onClick={handleSubmit}>
+        <Button
+          disabled={pending}
+          className="font-urban font-bold"
+          onClick={handleSubmit}
+        >
           Create Battle
         </Button>
       </CardFooter>
