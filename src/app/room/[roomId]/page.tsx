@@ -1,6 +1,6 @@
 "use client";
 import { useSocket } from "@/lib/socketProvider";
-import React, { useEffect } from "react";
+import React from "react";
 
 const Lobby = () => {
   const { isConnected } = useSocket();
