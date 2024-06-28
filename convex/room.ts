@@ -36,10 +36,13 @@ export const createRoom = mutation({
 export const getRoomDetails = query({
   args: { roomId: v.id("room") },
   handler: async (ctx, args) => {
-    const room = await ctx.db.get(args.roomId);
-    if (!room) {
+    const roomStatus = await ctx.db
+      .get(args.roomId)
+      .then((room) => room?.status);
+    if (roomStatus === undefined) {
       throw new Error("Room not found");
     }
-    return room;
+
+    return roomStatus;
   },
 });

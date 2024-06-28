@@ -14,7 +14,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { convex } from "../../../convex/convexHttpClient";
+import { convex } from "../../lib/convexHttpClient";
 import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 
@@ -52,10 +52,10 @@ const JoinRoomCard = () => {
   };
 
   const handleRouting = async (roomId: any) => {
-    const roomDetails = await convex.query(api.room.getRoomDetails, { roomId });
+    const roomStatus = await convex.query(api.room.getRoomDetails, { roomId });
 
-    if (roomDetails) {
-      switch (roomDetails.status) {
+    if (roomStatus) {
+      switch (roomStatus) {
         case "waiting":
           router.push(`/room/${battleCode}`);
           break;
@@ -76,7 +76,7 @@ const JoinRoomCard = () => {
       }
     }
 
-    console.log(roomDetails);
+    console.log(roomStatus);
   };
 
   const handleCancel = () => {
