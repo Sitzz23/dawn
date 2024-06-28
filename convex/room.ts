@@ -62,7 +62,9 @@ export const addPlayerToRoom = mutation({
       throw new Error("Battle has already started!");
     }
 
-    const updatedPlayerIds = Array.from(new Set([...room.playerIds, userId]));
+    const updatedPlayerIds = room.playerIds.includes(userId)
+      ? room.playerIds
+      : [...room.playerIds, userId];
 
     return await ctx.db.patch(roomId, {
       playerIds: updatedPlayerIds,

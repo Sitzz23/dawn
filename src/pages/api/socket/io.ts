@@ -2,10 +2,8 @@ import { NextApiResponseServerIo } from "@/lib/types";
 import { NextApiRequest } from "next";
 import { Server as NetServer } from "http";
 import { Server as ServerIO } from "socket.io";
-import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../../convex/_generated/api";
-
-const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+import { convex } from "@/lib/convexHttpClient";
 
 export const config = {
   api: {
@@ -21,16 +19,26 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
       path,
       addTrailingSlash: false,
     });
+    res.socket.server.io = io;
 
-    io.on("connection", (socket) => {
-      socket.on("join-room", async (roomId, userId) => {
-        socket.join(roomId);
-        await convex.mutation(api.room.addPlayerToRoom, { roomId, userId });
-        io.to(roomId).emit("player-joined", userId);
+    io.on("connection", (s) => {
+      console.log("New client connected");
+      s.on("join-room", async (roomId, userId) => {
+        console.log(`User ${userId} joining room ${roomId}`);
+        try {
+          await convex.mutation(api.room.addPlayerToRoom, { roomId, userId });
+          s.join(roomId);
+          io.to(roomId).emit("player-joined", userId);
+          console.log(`User ${userId} successfully joined room ${roomId}`);
+        } catch (error) {
+          console.error("Error joining room:", error);
+          console.error("Error joining room:", error);
+          // socket.emit("error", error.message);
+        }
       });
 
-      socket.on("leave-room", async (roomId, userId) => {
-        socket.leave(roomId);
+      s.on("leave-room", async (roomId, userId) => {
+        s.leave(roomId);
         await convex.mutation(api.room.removePlayerFromRoom, {
           roomId,
           userId,
@@ -38,20 +46,12 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
         io.to(roomId).emit("player-left", userId);
       });
 
-      // Keep your existing socket event handlers
-      socket.on("create-room", (fileId) => {
-        socket.join(fileId);
-      });
-      socket.on("send-changes", (deltas, fileId) => {
-        console.log("CHANGE");
-        socket.to(fileId).emit("receive-changes", deltas, fileId);
-      });
-      socket.on("send-cursor-move", (range, fileId, cursorId) => {
-        socket.to(fileId).emit("receive-cursor-move", range, fileId, cursorId);
+      s.on("disconnect", () => {
+        console.log("Client disconnected");
       });
     });
-
-    res.socket.server.io = io;
+  } else {
+    console.log("socket.io already running");
   }
   res.end();
 };
