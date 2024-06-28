@@ -62,6 +62,7 @@ export const addPlayerToRoom = mutation({
       throw new Error("Battle has already started!");
     }
 
+    // Use Array.includes() to check for existing userId instead of Set
     const updatedPlayerIds = room.playerIds.includes(userId)
       ? room.playerIds
       : [...room.playerIds, userId];
