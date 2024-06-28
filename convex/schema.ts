@@ -5,11 +5,12 @@ export default defineSchema({
   user: defineTable({
     name: v.string(),
     pictureUrl: v.string(),
-    playerId: v.string(),
+    playerId: v.optional(v.string()),
     wins: v.number(),
     losses: v.number(),
     ties: v.number(),
-  }),
+    tokenIdentifier: v.string(),
+  }).index("by_token", ["tokenIdentifier"]),
 
   room: defineTable({
     name: v.string(),
