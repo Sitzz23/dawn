@@ -12,10 +12,12 @@ import { useQuery } from "convex/react";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { api } from "../../../../convex/_generated/api";
+import { useSocket } from "@/lib/socketProvider";
 
 type Props = {};
 
 const Lobby = (props: Props) => {
+  // const { socket } = useSocket();
   const pathname = usePathname();
   const lobbyData = useQuery(
     api.lobby.getLobbyDetails,

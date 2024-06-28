@@ -25,7 +25,7 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
     io.on("connection", (socket) => {
       socket.on("join-room", async (roomId, userId) => {
         socket.join(roomId);
-        await convex.mutation(api.room.addPlayerToRoom, { roomId, userId });
+        await convex.mutation(api.room.addPlayerToRoom, { roomId });
         io.to(roomId).emit("player-joined", userId);
       });
 
@@ -33,7 +33,6 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
         socket.leave(roomId);
         await convex.mutation(api.room.removePlayerFromRoom, {
           roomId,
-          userId,
         });
         io.to(roomId).emit("player-left", userId);
       });

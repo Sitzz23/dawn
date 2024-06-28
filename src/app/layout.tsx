@@ -35,10 +35,10 @@ export default function RootLayout({
           // disableTransitionOnChange
         >
           <ConvexClientProvider>
-            {/* <SocketProvider> */}
-            {children}
-            <Toaster />
-            {/* </SocketProvider> */}
+            <SocketProvider>
+              {children}
+              <Toaster />
+            </SocketProvider>
           </ConvexClientProvider>
         </ThemeProvider>
       </body>
