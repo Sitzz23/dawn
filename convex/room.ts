@@ -46,3 +46,41 @@ export const getRoomDetails = query({
     return roomStatus;
   },
 });
+
+export const addPlayerToRoom = mutation({
+  args: { roomId: v.id("room"), userId: v.string() },
+  handler: async (ctx, args) => {
+    const { roomId, userId } = args;
+    const room = await ctx.db.get(roomId);
+    if (!room) throw new Error("Room not found");
+
+    if (room.playerIds.length >= room.maxPlayers) {
+      throw new Error("Room is full");
+    }
+
+    if (room.status !== "waiting") {
+      throw new Error("Battle has already started!");
+    }
+
+    const updatedPlayerIds = Array.from(new Set([...room.playerIds, userId]));
+
+    return await ctx.db.patch(roomId, {
+      playerIds: updatedPlayerIds,
+    });
+  },
+});
+
+export const removePlayerFromRoom = mutation({
+  args: { roomId: v.id("room"), userId: v.string() },
+  handler: async (ctx, args) => {
+    const { roomId, userId } = args;
+    const room = await ctx.db.get(roomId);
+    if (!room) throw new Error("Room not found");
+
+    const updatedPlayerIds = room.playerIds.filter((id) => id !== userId);
+
+    return await ctx.db.patch(roomId, {
+      playerIds: updatedPlayerIds,
+    });
+  },
+});
