@@ -1,8 +1,14 @@
+"use client";
+
 import Balancer from "react-wrap-balancer";
 import { SignUpButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
+import useApiMutation from "@/hooks/useApiMutation";
+import { api } from "../../../convex/_generated/api";
 
-export default async function Home() {
+export default function Home() {
+  const { mutate } = useApiMutation(api.user.addUser);
+
   return (
     <>
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
@@ -29,7 +35,9 @@ export default async function Home() {
                   <span className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500/0 via-violet-500/90 to-purple-500/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
                 </span>
                 <div className="relative flex space-x-2 items-center z-10 rounded-full bg-zinc-950 py-2 px-4 ring-1 ring-white/10 ">
-                  <Link href="/dashboard">Dashboard</Link>
+                  <Link href="/dashboard" onClick={() => mutate({})}>
+                    Dashboard
+                  </Link>
                 </div>
                 <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-indigo-500/0 via-violet-400/90 to-purple-500/0 transition-opacity duration-500 group-hover:opacity-40"></span>
               </button>
@@ -40,7 +48,7 @@ export default async function Home() {
                   <span className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500/0 via-violet-500/90 to-purple-500/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
                 </span>
                 <div className="relative flex space-x-2 items-center z-10 rounded-full bg-zinc-950 py-2 px-4 ring-1 ring-white/10 ">
-                  <SignUpButton>Get started</SignUpButton>
+                  <SignUpButton mode="modal">Get started</SignUpButton>
                 </div>
                 <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-indigo-500/0 via-violet-400/90 to-purple-500/0 transition-opacity duration-500 group-hover:opacity-40"></span>
               </button>

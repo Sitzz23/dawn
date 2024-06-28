@@ -11,12 +11,12 @@ import {
 import { useQuery } from "convex/react";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { api } from "../../../../convex/_generated/api";
-import { useSocket } from "@/lib/socketProvider";
+
 import { useUser } from "@clerk/nextjs";
+import { api } from "../../../../convex/_generated/api";
+import { Badge } from "@/components/ui/badge";
 
 const Lobby = () => {
-  const { isConnected } = useSocket();
   const { user } = useUser();
   const pathname = usePathname();
 
@@ -38,12 +38,13 @@ const Lobby = () => {
     <div className="h-screen flex items-center justify-center">
       <Card className="w-96">
         <CardHeader>
-          <CardTitle>Lobby</CardTitle>
-          <CardDescription>
-            {isConnected
-              ? `${user?.emailAddresses[0].emailAddress} and ${user?.id}`
-              : " not connected"}
-          </CardDescription>
+          <CardTitle className="flex justify-between items-center">
+            <p>Lobby</p>
+            <Badge variant={"secondary"} className="text-xs">
+              {lobbyData.playerIds.length} / {lobbyData.maxPlayers}
+            </Badge>
+          </CardTitle>
+          <CardDescription>Waiting area for players to join</CardDescription>
         </CardHeader>
         <CardContent>
           <h3 className="font-semibold mb-2">Connected Players:</h3>
@@ -53,11 +54,7 @@ const Lobby = () => {
             ))}
           </ul>
         </CardContent>
-        <CardFooter>
-          <p>
-            {lobbyData.playerIds.length} / {lobbyData.maxPlayers} Players
-          </p>
-        </CardFooter>
+        <CardFooter></CardFooter>
       </Card>
     </div>
   );
