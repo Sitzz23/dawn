@@ -20,7 +20,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
-        suppressHydrationWarning={true}
         className={cn(
           "min-h-screen bg-background antialiased font-figtree",
           fontSans.variable,

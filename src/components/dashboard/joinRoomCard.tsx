@@ -12,11 +12,14 @@ import {
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import Link from "next/link";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { convex } from "../../../convex/convexHttpClient";
+import { api } from "../../../convex/_generated/api";
+import { useRouter } from "next/navigation";
 
 const JoinRoomCard = () => {
+  const router = useRouter();
   const [battleCode, setBattleCode] = useState("");
   const [battleCodeError, setBattleCodeError] = useState(false);
 
@@ -25,9 +28,8 @@ const JoinRoomCard = () => {
       toast.error("Battle code is required");
       setBattleCodeError(true);
       return false;
-    } else if (code.length !== 6) {
-      // Assuming battle codes are 6 characters long
-      toast.error("Battle code must be 6 characters long");
+    } else if (code.length <= 6) {
+      toast.error("Battle code must be atleast 6 characters long");
       setBattleCodeError(true);
       return false;
     }
@@ -43,12 +45,38 @@ const JoinRoomCard = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (validateBattleCode(battleCode)) {
-      console.log("Joining battle with code:", battleCode);
-      toast.success("Joining the battle!");
-      // Here you would typically handle the room joining logic
+      handleRouting(battleCode);
     } else {
       console.log("Invalid battle code");
     }
+  };
+
+  const handleRouting = async (roomId: any) => {
+    const roomDetails = await convex.query(api.room.getRoomDetails, { roomId });
+
+    if (roomDetails) {
+      switch (roomDetails.status) {
+        case "waiting":
+          router.push(`/room/${battleCode}`);
+          break;
+        case "in_progress":
+          toast.error("Cannot join the room", {
+            description: "The battle has already started.",
+          });
+          break;
+        case "completed":
+          toast.error("Cannot join the room", {
+            description: "The battle has already ended.",
+          });
+          break;
+        default:
+          toast.error("Unable to join the room", {
+            description: "Unknown room status.",
+          });
+      }
+    }
+
+    console.log(roomDetails);
   };
 
   const handleCancel = () => {
