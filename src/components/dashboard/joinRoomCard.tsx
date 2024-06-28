@@ -17,11 +17,13 @@ import { cn } from "@/lib/utils";
 import { convex } from "../../lib/convexHttpClient";
 import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
+import useApiMutation from "@/hooks/useApiMutation";
 
 const JoinRoomCard = () => {
   const router = useRouter();
   const [battleCode, setBattleCode] = useState("");
   const [battleCodeError, setBattleCodeError] = useState(false);
+  const { mutate, pending } = useApiMutation(api.room.addPlayerToRoom);
 
   const validateBattleCode = (code: string): boolean => {
     if (!code.trim()) {
@@ -57,7 +59,13 @@ const JoinRoomCard = () => {
     if (roomStatus) {
       switch (roomStatus) {
         case "waiting":
-          router.push(`/room/${battleCode}`);
+          mutate({
+            roomId: battleCode,
+          })
+            .then(() => {
+              router.push(`/room/${battleCode}`);
+            })
+            .catch(() => toast.error("Failed to join room"));
           break;
         case "in_progress":
           toast.error("Cannot join the room", {
@@ -118,7 +126,11 @@ const JoinRoomCard = () => {
         >
           Cancel
         </Button>
-        <Button className="font-urban font-bold" onClick={handleSubmit}>
+        <Button
+          className="font-urban font-bold"
+          onClick={handleSubmit}
+          disabled={pending}
+        >
           Engage!
         </Button>
       </CardFooter>

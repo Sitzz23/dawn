@@ -48,11 +48,12 @@ export const getRoomDetails = query({
 });
 
 export const addPlayerToRoom = mutation({
-  args: { roomId: v.id("room"), userId: v.string() },
+  args: { roomId: v.id("room") },
   handler: async (ctx, args) => {
-    const { roomId, userId } = args;
-    const room = await ctx.db.get(roomId);
+    const identity = await ctx.auth.getUserIdentity();
+    const room = await ctx.db.get(args.roomId);
     if (!room) throw new Error("Room not found");
+    if (!identity) throw new Error("User not found");
 
     if (room.playerIds.length >= room.maxPlayers) {
       throw new Error("Room is full");
@@ -62,27 +63,30 @@ export const addPlayerToRoom = mutation({
       throw new Error("Battle has already started!");
     }
 
-    // Use Array.includes() to check for existing userId instead of Set
-    const updatedPlayerIds = room.playerIds.includes(userId)
+    const updatedPlayerIds = room.playerIds.includes(identity.subject)
       ? room.playerIds
-      : [...room.playerIds, userId];
+      : [...room.playerIds, identity.subject];
 
-    return await ctx.db.patch(roomId, {
+    return await ctx.db.patch(args.roomId, {
       playerIds: updatedPlayerIds,
     });
   },
 });
 
 export const removePlayerFromRoom = mutation({
-  args: { roomId: v.id("room"), userId: v.string() },
+  args: { roomId: v.id("room") },
   handler: async (ctx, args) => {
-    const { roomId, userId } = args;
-    const room = await ctx.db.get(roomId);
+    const identity = await ctx.auth.getUserIdentity();
+    const room = await ctx.db.get(args.roomId);
+
     if (!room) throw new Error("Room not found");
+    if (!identity) throw new Error("User not found");
 
-    const updatedPlayerIds = room.playerIds.filter((id) => id !== userId);
+    const updatedPlayerIds = room.playerIds.filter(
+      (id) => id !== identity.subject
+    );
 
-    return await ctx.db.patch(roomId, {
+    return await ctx.db.patch(args.roomId, {
       playerIds: updatedPlayerIds,
     });
   },

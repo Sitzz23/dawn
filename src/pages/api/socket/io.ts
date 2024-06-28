@@ -23,17 +23,14 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
 
     io.on("connection", (s) => {
       console.log("New client connected");
-      s.on("join-room", async (roomId, userId) => {
-        console.log(`User ${userId} joining room ${roomId}`);
+      s.on("join-room", async (roomId) => {
+        console.log(`User joining room ${roomId}`);
         try {
-          await convex.mutation(api.room.addPlayerToRoom, { roomId, userId });
+          await convex.mutation(api.room.addPlayerToRoom, { roomId });
           s.join(roomId);
-          io.to(roomId).emit("player-joined", userId);
-          console.log(`User ${userId} successfully joined room ${roomId}`);
+          // console.log(`User ${userId} successfully joined room ${roomId}`);
         } catch (error) {
           console.error("Error joining room:", error);
-          console.error("Error joining room:", error);
-          // socket.emit("error", error.message);
         }
       });
 
@@ -41,9 +38,8 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
         s.leave(roomId);
         await convex.mutation(api.room.removePlayerFromRoom, {
           roomId,
-          userId,
         });
-        io.to(roomId).emit("player-left", userId);
+        io.to(roomId).emit("player-left");
       });
 
       s.on("disconnect", () => {
