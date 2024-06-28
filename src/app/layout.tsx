@@ -20,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
+        suppressHydrationWarning={true}
         className={cn(
           "min-h-screen bg-background antialiased font-figtree",
           fontSans.variable,
@@ -36,8 +37,8 @@ export default function RootLayout({
         >
           <ConvexClientProvider>
             {/* <SocketProvider> */}
-              {children}
-              <Toaster />
+            {children}
+            <Toaster />
             {/* </SocketProvider> */}
           </ConvexClientProvider>
         </ThemeProvider>
