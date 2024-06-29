@@ -10,14 +10,17 @@ import {
 } from "@/components/ui/card";
 import { useQuery } from "convex/react";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
-
+import React from "react";
 import { useUser } from "@clerk/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { convex } from "@/lib/convexHttpClient";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface UserData {
   tokenIdentifier: string;
@@ -32,30 +35,9 @@ const Lobby = () => {
   const roomId = getRoomId(pathname);
   const lobbyData = useQuery(api.lobby.getLobbyDetails, roomId as any);
 
-  const [userDetails, setUserDetails] = useState<UserData[]>([]);
-
-  // const userDetails = useQuery(api.user.getUserDetails, {
-  //   userIds: lobbyData?.playerIds || [],
-  // });
-
-  // useEffect(() => {
-  //   const fetchUserDetails = async () => {
-  //     if (lobbyData?.playerIds) {
-  //       try {
-  //         console.log("id hai re baba", lobbyData.playerIds);
-  //         const newUserDetails = await convex.query(api.user.getUserDetails, {
-  //           userIds: lobbyData.playerIds,
-  //         });
-  //         console.log("details hai re baba", newUserDetails);
-  //         setUserDetails(newUserDetails);
-  //       } catch (error) {
-  //         console.error("Error fetching user details:", error);
-  //       }
-  //     }
-  //   };
-
-  //   fetchUserDetails();
-  // }, [lobbyData]);
+  const userDetails = useQuery(api.user.getUserDetails, {
+    userIds: lobbyData?.playerIds || [],
+  });
 
   function getRoomId(path: string | null) {
     if (path && path.startsWith("/room/")) {
@@ -64,33 +46,25 @@ const Lobby = () => {
     return null;
   }
 
-  if (!lobbyData) {
-    return <div>Loading...</div>;
-  }
-
-  async function getDetails() {
-    if (lobbyData) {
-      console.log("id hai re baba", lobbyData.playerIds);
-      const newUserDetails = await convex.query(api.user.getUserDetails, {
-        userIds: lobbyData.playerIds,
-      });
-      console.log("details hai re baba", newUserDetails);
-      setUserDetails(newUserDetails);
-    }
-  }
-
   const PlayerCard: React.FC<{ player: UserData; isHost: boolean }> = ({
     player,
     isHost,
   }) => (
-    <Card className="mb-2">
+    <Card className="mb-2 ">
       <CardContent className="flex items-center p-4">
-        <Avatar className="h-10 w-10 mr-4">
+        <Avatar className="h-10 w-10 mr-4 z-10">
           <AvatarImage src={player.pictureUrl} alt={player.name} />
           <AvatarFallback>{player.name.charAt(0)}</AvatarFallback>
         </Avatar>
         <div className="flex-grow">
-          <p className="font-semibold">{player.name}</p>
+          {isHost ? (
+            <span className="bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent font-semibold">
+              {player.name}
+            </span>
+          ) : (
+            <p className="font-semibold">{player.name}</p>
+          )}
+
           <p className="text-sm text-gray-500">Wins: {player.wins}</p>
         </div>
         <div className="flex flex-col items-end">
@@ -99,46 +73,48 @@ const Lobby = () => {
               You
             </Badge>
           )}
-          {isHost && <Badge variant="default">Host</Badge>}
         </div>
       </CardContent>
     </Card>
   );
 
   return (
-    <div className="h-screen flex items-center justify-center">
-      <Card className="w-96">
+    <div className="h-screen flex items-center justify-center w-screen">
+      <Card className="w-[50%]">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
             <p>Lobby</p>
-            <Badge variant={"secondary"} className="text-xs">
-              {lobbyData.playerIds.length} / {lobbyData.maxPlayers}
-            </Badge>
+            {lobbyData ? (
+              <Badge variant={"secondary"} className="text-xs">
+                {lobbyData.playerIds.length} / {lobbyData.maxPlayers}
+              </Badge>
+            ) : (
+              <Skeleton className="rounded-full w-10 h-5" />
+            )}
           </CardTitle>
           <CardDescription>Waiting area for players to join</CardDescription>
         </CardHeader>
-        <CardContent>
-          <h3 className="font-semibold mb-2">Connected Players:</h3>
+        <CardContent className="grid grid-cols-2 gap-6">
           {userDetails && userDetails.length > 0 ? (
             userDetails.map((player) => (
               <PlayerCard
                 key={player.tokenIdentifier}
                 player={player}
-                isHost={player.tokenIdentifier === lobbyData.hostId}
+                isHost={player.tokenIdentifier === lobbyData?.hostId}
               />
             ))
           ) : (
-            <div>no data</div>
+            <div>
+              <Skeleton className="" />
+            </div>
           )}
         </CardContent>
         <CardFooter>
-          <Button
-            onClick={() => {
-              getDetails();
-            }}
-          >
-            details
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">Open</Button>
+            </DropdownMenuTrigger>
+          </DropdownMenu>
         </CardFooter>
       </Card>
     </div>
