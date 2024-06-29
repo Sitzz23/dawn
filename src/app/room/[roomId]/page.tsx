@@ -83,7 +83,7 @@ const Lobby = () => {
       <Card className="w-[50%]">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
-            <p>Lobby</p>
+            <p className="font-heading">Lobby</p>
             {lobbyData ? (
               <Badge variant={"secondary"} className="text-xs">
                 {lobbyData.playerIds.length} / {lobbyData.maxPlayers}
@@ -112,7 +112,7 @@ const Lobby = () => {
         <CardFooter>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">Open</Button>
+              <Button variant="outline">Invite players</Button>
             </DropdownMenuTrigger>
           </DropdownMenu>
         </CardFooter>

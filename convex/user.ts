@@ -11,10 +11,9 @@ export const addUser = mutation({
 
     const user = await ctx.db
       .query("user")
-      .withIndex("by_token", (q) =>
-        q.eq("tokenIdentifier", identity.tokenIdentifier)
-      )
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
       .unique();
+
     if (user !== null) {
       if (user.name !== identity.name) {
         await ctx.db.patch(user._id, { name: identity.name });
@@ -46,6 +45,7 @@ export const getUserDetails = query({
           q.eq(q.field("tokenIdentifier"), "")
         )
       )
+      .order("desc")
       .collect();
 
     console.log("Query results:", results);
