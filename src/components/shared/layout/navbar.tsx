@@ -19,7 +19,7 @@ const Navbar = () => {
           <UserButton />
         </SignedIn>
         <SignedOut>
-          <Button className="relative  font-urban font-bold" asChild>
+          <Button className="font-urban font-bold" asChild>
             <SignInButton mode="modal">Sign In</SignInButton>
           </Button>
         </SignedOut>
