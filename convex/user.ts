@@ -1,4 +1,5 @@
-import { mutation } from "./_generated/server";
+import { v } from "convex/values";
+import { mutation, query } from "./_generated/server";
 
 export const addUser = mutation({
   args: {},
@@ -23,11 +24,38 @@ export const addUser = mutation({
 
     return await ctx.db.insert("user", {
       name: identity.name!,
-      tokenIdentifier: identity.tokenIdentifier,
+      tokenIdentifier: identity.subject,
       pictureUrl: identity.pictureUrl!,
       wins: 0,
       losses: 0,
       ties: 0,
     });
+  },
+});
+
+export const getUserDetails = query({
+  args: { userIds: v.array(v.string()) },
+  handler: async (ctx, args) => {
+    console.log("Received userIds:", args.userIds);
+
+    const results = await ctx.db
+      .query("user")
+      .filter((q) =>
+        args.userIds.reduce(
+          (acc, userId) => q.or(acc, q.eq(q.field("tokenIdentifier"), userId)),
+          q.eq(q.field("tokenIdentifier"), "")
+        )
+      )
+      .collect();
+
+    console.log("Query results:", results);
+
+    if (results.length !== args.userIds.length) {
+      console.warn(
+        `Mismatch: Found ${results.length} users for ${args.userIds.length} userIds`
+      );
+    }
+
+    return results;
   },
 });
