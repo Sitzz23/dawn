@@ -19,8 +19,15 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Clipboard, Mail } from "lucide-react";
+import { toast } from "sonner";
 
 interface UserData {
   tokenIdentifier: string;
@@ -78,6 +85,13 @@ const Lobby = () => {
     </Card>
   );
 
+  const copyRoomId = () => {
+    if (roomId) {
+      navigator.clipboard.writeText(roomId.roomId);
+      toast.success("Room code copied to clipboard!");
+    }
+  };
+
   return (
     <div className="h-screen flex items-center justify-center w-screen">
       <Card className="w-[50%]">
@@ -112,8 +126,25 @@ const Lobby = () => {
         <CardFooter>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">Invite players</Button>
+              <Button variant="outline">Battlepass</Button>
             </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56 ">
+              <DropdownMenuLabel>Invite players</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  copyRoomId();
+                }}
+              >
+                <Clipboard className="mr-2 h-4 w-4" />
+                <span>Copy room code</span>
+                <DropdownMenuShortcut>⇧⌘C</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Mail className="mr-2 h-4 w-4" />
+                <span>Email</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
           </DropdownMenu>
         </CardFooter>
       </Card>
