@@ -9,12 +9,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useQuery } from "convex/react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { useUser } from "@clerk/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -26,7 +25,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Clipboard, Mail } from "lucide-react";
+import { ChevronLeft, Clipboard, Mail } from "lucide-react";
 import { toast } from "sonner";
 import {
   Tooltip,
@@ -35,12 +34,16 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { PlayerCard } from "@/components/room/lobby/playerCard";
+import useApiMutation from "@/hooks/useApiMutation";
 
 const Lobby = () => {
+  const router = useRouter();
   const { user } = useUser();
   const pathname = usePathname();
   const roomId = getRoomId(pathname);
+  const roomCode = getRoomCode(pathname);
   const lobbyData = useQuery(api.lobby.getLobbyDetails, roomId as any);
+  const { mutate, pending } = useApiMutation(api.room.removePlayerFromRoom);
 
   const userDetails = useQuery(api.user.getUserDetails, {
     userIds: lobbyData?.playerIds || [],
@@ -49,6 +52,13 @@ const Lobby = () => {
   function getRoomId(path: string | null) {
     if (path && path.startsWith("/room/")) {
       return { roomId: path.slice(6) };
+    }
+    return null;
+  }
+
+  function getRoomCode(path: string | null) {
+    if (path && path.startsWith("/room/")) {
+      return path.slice(6);
     }
     return null;
   }
@@ -65,11 +75,24 @@ const Lobby = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center w-screen">
+    <div className="h-screen flex items-center justify-center w-screen relative">
+      <Button
+        variant={"outline"}
+        className="absolute top-4 left-4"
+        onClick={() => {
+          // console.log(roomCode);
+          mutate({ roomCode }).then(() => {
+            router.back();
+          });
+        }}
+      >
+        <ChevronLeft size={15} />
+        &nbsp;Leave
+      </Button>
       <Card className="w-[50%]">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
-            <p className="font-heading">Lobby</p>
+            <p className="font-heading">Lobby for {lobbyData?.name}</p>
             {lobbyData ? (
               <Badge variant={"secondary"} className="text-xs">
                 {lobbyData.playerIds.length} / {lobbyData.maxPlayers}
