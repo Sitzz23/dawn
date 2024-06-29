@@ -55,7 +55,9 @@ export const addPlayerToRoom = mutation({
     if (!room) throw new Error("Room not found");
     if (!identity) throw new Error("User not found");
 
-    if (room.playerIds.length >= room.maxPlayers) {
+    const isUserInRoom = room.playerIds.includes(identity.subject);
+
+    if (room.playerIds.length >= room.maxPlayers && !isUserInRoom) {
       throw new Error("Room is full");
     }
 
