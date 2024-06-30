@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/tooltip";
 import { PlayerCard } from "@/components/room/lobby/playerCard";
 import useApiMutation from "@/hooks/useApiMutation";
+import { convex } from "@/lib/convexHttpClient";
 
 const Lobby = () => {
   const router = useRouter();
@@ -64,6 +65,9 @@ const Lobby = () => {
   }
 
   const startRoom = () => {
+    convex.mutation(api.lobby.startRoom, {
+      roomCode,
+    } as any);
     router.replace(`/room/${roomCode}/workspace`);
   };
 

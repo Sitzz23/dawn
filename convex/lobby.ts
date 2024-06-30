@@ -11,3 +11,27 @@ export const getLobbyDetails = query({
     return room;
   },
 });
+
+export const startRoom = mutation({
+  args: { roomCode: v.id("room") },
+  handler: async (ctx, { roomCode }) => {
+    const room = await ctx.db.get(roomCode);
+
+    if (!room) {
+      throw new Error("Room not found");
+    }
+
+    if (room.status !== "waiting") {
+      throw new Error("Room is not in waiting status");
+    }
+
+    const now = Date.now();
+
+    const updatedRoom = await ctx.db.patch(roomCode, {
+      status: "in_progress",
+      startedAt: now,
+    });
+
+    return updatedRoom;
+  },
+});
