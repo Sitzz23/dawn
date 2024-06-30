@@ -43,7 +43,7 @@ const Lobby = () => {
   const roomId = getRoomId(pathname);
   const roomCode = getRoomCode(pathname);
   const lobbyData = useQuery(api.lobby.getLobbyDetails, roomId as any);
-  const { mutate, pending } = useApiMutation(api.room.removePlayerFromRoom);
+  const { mutate } = useApiMutation(api.room.removePlayerFromRoom);
 
   const userDetails = useQuery(api.user.getUserDetails, {
     userIds: lobbyData?.playerIds || [],
@@ -62,6 +62,10 @@ const Lobby = () => {
     }
     return null;
   }
+
+  const startRoom = () => {
+    router.replace(`/room/${roomCode}/workspace`);
+  };
 
   const copyRoomId = () => {
     if (roomId) {
@@ -82,7 +86,7 @@ const Lobby = () => {
         onClick={() => {
           // console.log(roomCode);
           mutate({ roomCode }).then(() => {
-            router.back();
+            router.replace("/dashboard");
           });
         }}
       >
@@ -165,7 +169,12 @@ const Lobby = () => {
             </DropdownMenuContent>
           </DropdownMenu>
           {user?.id === lobbyData?.hostId ? (
-            <Button className="font-urban font-bold">Start battle</Button>
+            <Button
+              className="font-urban font-bold"
+              onClick={() => startRoom()}
+            >
+              Start battle
+            </Button>
           ) : (
             <TooltipProvider>
               <Tooltip>

@@ -45,7 +45,7 @@ export const getUserDetails = query({
           q.eq(q.field("tokenIdentifier"), "")
         )
       )
-      .order("desc")
+      // .order("desc")
       .collect();
 
     console.log("Query results:", results);

@@ -1,7 +1,7 @@
 import React from "react";
 
 const Workspace = () => {
-  return <div>ola, i&apos;m Workspace</div>;
+  return <div>Workspace</div>;
 };
 
 export default Workspace;
