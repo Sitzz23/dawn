@@ -36,44 +36,30 @@ import {
 import { PlayerCard } from "@/components/room/lobby/playerCard";
 import useApiMutation from "@/hooks/useApiMutation";
 import { convex } from "@/lib/convexHttpClient";
+import { useRoomLeaveHandler } from "@/hooks/useRoomLeaveHandler";
+import { useRoomId } from "@/hooks/useRoomId";
 
 const Lobby = () => {
   const router = useRouter();
   const { user } = useUser();
-  const pathname = usePathname();
-  const roomId = getRoomId(pathname);
-  const roomCode = getRoomCode(pathname);
+  const roomId = useRoomId();
   const lobbyData = useQuery(api.lobby.getLobbyDetails, roomId as any);
-  const { mutate } = useApiMutation(api.room.removePlayerFromRoom);
+  // const { mutate } = useApiMutation(api.room.removePlayerFromRoom);
 
   const userDetails = useQuery(api.user.getUserDetails, {
     userIds: lobbyData?.playerIds || [],
   });
 
-  function getRoomId(path: string | null) {
-    if (path && path.startsWith("/room/")) {
-      return { roomId: path.slice(6) };
-    }
-    return null;
-  }
-
-  function getRoomCode(path: string | null) {
-    if (path && path.startsWith("/room/")) {
-      return path.slice(6);
-    }
-    return null;
-  }
-
   const startRoom = () => {
     convex.mutation(api.lobby.startRoom, {
-      roomCode,
+      roomId,
     } as any);
-    router.replace(`/room/${roomCode}/workspace`);
+    router.replace(`/room/${roomId}/workspace`);
   };
 
   const copyRoomId = () => {
     if (roomId) {
-      navigator.clipboard.writeText(roomId.roomId);
+      navigator.clipboard.writeText(roomId);
       toast.success("Room code copied to clipboard!");
     }
   };
@@ -88,10 +74,10 @@ const Lobby = () => {
         variant={"outline"}
         className="absolute top-4 left-4"
         onClick={() => {
-          // console.log(roomCode);
-          mutate({ roomCode }).then(() => {
-            router.replace("/dashboard");
-          });
+          console.log(roomId);
+          // mutate({ roomId }).then(() => {
+          //   router.replace("/dashboard");
+          // });
         }}
       >
         <ChevronLeft size={15} />
