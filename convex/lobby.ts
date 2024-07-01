@@ -13,9 +13,9 @@ export const getLobbyDetails = query({
 });
 
 export const startRoom = mutation({
-  args: { roomCode: v.id("room") },
-  handler: async (ctx, { roomCode }) => {
-    const room = await ctx.db.get(roomCode);
+  args: { roomId: v.id("room") },
+  handler: async (ctx, { roomId }) => {
+    const room = await ctx.db.get(roomId);
 
     if (!room) {
       throw new Error("Room not found");
@@ -27,7 +27,7 @@ export const startRoom = mutation({
 
     const now = Date.now();
 
-    const updatedRoom = await ctx.db.patch(roomCode, {
+    const updatedRoom = await ctx.db.patch(roomId, {
       status: "in_progress",
       startedAt: now,
     });

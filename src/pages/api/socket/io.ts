@@ -34,11 +34,12 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
         }
       });
 
-      s.on("leave-room", async (roomId, userId) => {
+      s.on("leave-room", async (roomId) => {
         s.leave(roomId);
         await convex.mutation(api.room.removePlayerFromRoom, {
           roomId,
-        });
+        } as any);
+        console.log(`User successfully left room ${roomId}`);
         io.to(roomId).emit("player-left");
       });
 

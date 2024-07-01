@@ -33,7 +33,7 @@ export const createRoom = mutation({
   },
 });
 
-export const getRoomDetails = query({
+export const getRoomStatus = query({
   args: { roomId: v.id("room") },
   handler: async (ctx, args) => {
     const roomStatus = await ctx.db

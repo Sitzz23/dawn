@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useQuery } from "convex/react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useUser } from "@clerk/nextjs";
 import { api } from "../../../../convex/_generated/api";
@@ -34,17 +34,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { PlayerCard } from "@/components/room/lobby/playerCard";
-import useApiMutation from "@/hooks/useApiMutation";
 import { convex } from "@/lib/convexHttpClient";
-import { useRoomLeaveHandler } from "@/hooks/useRoomLeaveHandler";
-import { useRoomId } from "@/hooks/useRoomId";
+import useApiMutation from "@/hooks/useApiMutation";
 
-const Lobby = () => {
+const Lobby = ({ params }: { params: { roomId: string } }) => {
   const router = useRouter();
   const { user } = useUser();
-  const roomId = useRoomId();
-  const lobbyData = useQuery(api.lobby.getLobbyDetails, roomId as any);
-  // const { mutate } = useApiMutation(api.room.removePlayerFromRoom);
+  const roomId = params.roomId;
+  const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
+  const { mutate } = useApiMutation(api.room.removePlayerFromRoom);
 
   const userDetails = useQuery(api.user.getUserDetails, {
     userIds: lobbyData?.playerIds || [],
@@ -75,9 +73,9 @@ const Lobby = () => {
         className="absolute top-4 left-4"
         onClick={() => {
           console.log(roomId);
-          // mutate({ roomId }).then(() => {
-          //   router.replace("/dashboard");
-          // });
+          mutate({ roomId }).then(() => {
+            router.replace("/dashboard");
+          });
         }}
       >
         <ChevronLeft size={15} />

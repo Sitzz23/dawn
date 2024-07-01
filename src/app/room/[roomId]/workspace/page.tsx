@@ -3,30 +3,14 @@ import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useRoomId } from "@/hooks/useRoomId";
-import { useSocket } from "@/lib/socketProvider";
-import {
-  Bot,
-  Code2,
-  LifeBuoy,
-  Sparkle,
-  SquareTerminal,
-  SquareUser,
-  Triangle,
-} from "lucide-react";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { Bot, Code2, LifeBuoy, SquareTerminal, SquareUser } from "lucide-react";
+import React from "react";
 
 const Workspace = () => {
-  const { socket, isConnected } = useSocket();
   const roomId = useRoomId();
-
-  useEffect(() => {
-    console.log(roomId);
-  }, [roomId]);
 
   return (
     <div className="grid h-screen w-full pl-[56px]">
