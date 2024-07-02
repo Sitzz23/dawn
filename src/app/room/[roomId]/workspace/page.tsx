@@ -1,17 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useQuery } from "convex/react";
 
-import { Bot, Code2, LifeBuoy, SquareTerminal, SquareUser } from "lucide-react";
+import { Clock } from "lucide-react";
 import React from "react";
 import { api } from "../../../../../convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
 import RoomTimer from "@/components/workspace/timer";
+import WorkspaceSidebar from "@/components/workspace/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
   const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
@@ -19,94 +16,9 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
 
   return (
     <div className="grid h-screen w-full pl-[56px]">
-      <aside className="inset-y fixed left-0 z-20 flex h-full flex-col border-r">
-        <div className="border-b p-2">
-          <Button variant="outline" size="icon" aria-label="Home">
-            <p className="text-2xl">✦</p>
-          </Button>
-        </div>
-        <nav className="grid gap-1 p-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-lg"
-                aria-label="Playground"
-              >
-                <SquareTerminal className="size-5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right" sideOffset={5}>
-              Playground
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-lg"
-                aria-label="Models"
-              >
-                <Bot className="size-5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right" sideOffset={5}>
-              Models
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-lg"
-                aria-label="API"
-              >
-                <Code2 className="size-5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right" sideOffset={5}>
-              API
-            </TooltipContent>
-          </Tooltip>
-        </nav>
-        <nav className="mt-auto grid gap-1 p-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="mt-auto rounded-lg"
-                aria-label="Help"
-              >
-                <LifeBuoy className="size-5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right" sideOffset={5}>
-              Help
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="mt-auto rounded-lg"
-                aria-label="Account"
-              >
-                <SquareUser className="size-5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right" sideOffset={5}>
-              Account
-            </TooltipContent>
-          </Tooltip>
-        </nav>
-      </aside>
+      <WorkspaceSidebar />
       <div className="flex flex-col">
-        <header className="sticky top-0 z-10 flex h-[57px] items-center gap-1 border-b bg-background px-4 justify-between">
+        <header className="sticky top-0 z-10 flex h-[57px] items-center gap-1 border-b bg-background pl-4 pr-2 justify-between">
           <h1 className="text-xl font-semibold">
             {user?.firstName}&apos;s workspace
           </h1>
@@ -117,7 +29,10 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
               roomId={roomId}
             />
           ) : (
-            <>loading...</>
+            <Button variant="outline" aria-label="Home" className="">
+              <Clock size={22} className="pr-2" />
+              <Skeleton className="w-10 h-6" />
+            </Button>
           )}
         </header>
       </div>
