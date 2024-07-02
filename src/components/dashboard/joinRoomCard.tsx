@@ -54,7 +54,7 @@ const JoinRoomCard = () => {
   };
 
   const handleRouting = async (roomId: any) => {
-    const roomStatus = await convex.query(api.room.getRoomDetails, { roomId });
+    const roomStatus = await convex.query(api.room.getRoomStatus, { roomId });
 
     if (roomStatus) {
       switch (roomStatus) {

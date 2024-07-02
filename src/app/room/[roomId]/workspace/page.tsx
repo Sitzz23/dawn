@@ -9,16 +9,21 @@ import { useUser } from "@clerk/nextjs";
 import RoomTimer from "@/components/workspace/timer";
 import WorkspaceSidebar from "@/components/workspace/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 
 const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
   const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
   const { user } = useUser();
 
   return (
-    <div className="grid h-screen w-full pl-[56px]">
+    <div className="h-screen w-full pl-[56px] flex">
       <WorkspaceSidebar />
-      <div className="flex flex-col">
-        <header className="sticky top-0 z-10 flex h-[57px] items-center gap-1 border-b bg-background pl-4 pr-2 justify-between">
+      <div className="flex-1 flex flex-col w-full h-full">
+        <header className="flex h-[57px] items-center gap-1 border-b bg-background pl-4 pr-2 justify-between">
           <h1 className="text-xl font-semibold">
             {user?.firstName}&apos;s workspace
           </h1>
@@ -35,6 +40,21 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
             </Button>
           )}
         </header>
+        <main className="flex-1">
+          <ResizablePanelGroup direction="horizontal" className="h-full">
+            <ResizablePanel defaultSize={25} minSize={20} className="p-4">
+              <div className="flex h-full items-center justify-center p-2 rounded-lg ">
+                <span className="font-semibold">Questions</span>
+              </div>
+            </ResizablePanel>
+            <ResizableHandle withHandle />
+            <ResizablePanel defaultSize={75} className="p-4">
+              <div className="flex h-full items-center justify-center p-2 rounded-lg ">
+                <span className="font-semibold">Code editor</span>
+              </div>
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </main>
       </div>
     </div>
   );
