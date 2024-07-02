@@ -17,6 +17,7 @@ import type {
 import type * as lobby from "../lobby.js";
 import type * as room from "../room.js";
 import type * as user from "../user.js";
+import type * as workspace from "../workspace.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -30,6 +31,7 @@ declare const fullApi: ApiFromModules<{
   lobby: typeof lobby;
   room: typeof room;
   user: typeof user;
+  workspace: typeof workspace;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

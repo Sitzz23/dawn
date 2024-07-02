@@ -37,10 +37,9 @@ import { PlayerCard } from "@/components/room/lobby/playerCard";
 import { convex } from "@/lib/convexHttpClient";
 import useApiMutation from "@/hooks/useApiMutation";
 
-const Lobby = ({ params }: { params: { roomId: string } }) => {
+const Lobby = ({ params: { roomId } }: { params: { roomId: string } }) => {
   const router = useRouter();
   const { user } = useUser();
-  const roomId = params.roomId;
   const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
   const { mutate } = useApiMutation(api.room.removePlayerFromRoom);
 

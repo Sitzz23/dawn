@@ -5,16 +5,21 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useRoomId } from "@/hooks/useRoomId";
+import { useQuery } from "convex/react";
+
 import { Bot, Code2, LifeBuoy, SquareTerminal, SquareUser } from "lucide-react";
 import React from "react";
+import { api } from "../../../../../convex/_generated/api";
+import { useUser } from "@clerk/nextjs";
+import RoomTimer from "@/components/workspace/timer";
 
-const Workspace = () => {
-  const roomId = useRoomId();
+const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
+  const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
+  const { user } = useUser();
 
   return (
     <div className="grid h-screen w-full pl-[56px]">
-      <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r">
+      <aside className="inset-y fixed left-0 z-20 flex h-full flex-col border-r">
         <div className="border-b p-2">
           <Button variant="outline" size="icon" aria-label="Home">
             <p className="text-2xl">✦</p>
@@ -100,6 +105,22 @@ const Workspace = () => {
           </Tooltip>
         </nav>
       </aside>
+      <div className="flex flex-col">
+        <header className="sticky top-0 z-10 flex h-[57px] items-center gap-1 border-b bg-background px-4 justify-between">
+          <h1 className="text-xl font-semibold">
+            {user?.firstName}&apos;s workspace
+          </h1>
+          {lobbyData && lobbyData.startedAt ? (
+            <RoomTimer
+              serverTimestamp={lobbyData.startedAt}
+              roomDuration={lobbyData.roomDuration}
+              roomId={roomId}
+            />
+          ) : (
+            <>loading...</>
+          )}
+        </header>
+      </div>
     </div>
   );
 };
