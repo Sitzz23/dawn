@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Button } from "../ui/button";
+import { Clock } from "lucide-react";
 
 const RoomTimer = ({
   roomDuration,
@@ -49,11 +51,14 @@ const RoomTimer = ({
   };
 
   return (
-    <div className="flex items-center">
-      <div className="text-base ">
-        {remainingTime !== null ? formatTime(remainingTime) : "Calculating..."}
-      </div>
-    </div>
+    <>
+      {remainingTime !== null && (
+        <Button variant="outline" aria-label="Home" className="">
+          <Clock size={22} className="pr-2" />
+          {formatTime(remainingTime)}
+        </Button>
+      )}
+    </>
   );
 };
 
