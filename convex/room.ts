@@ -12,18 +12,18 @@ export const createRoom = mutation({
       v.literal("hard")
     ),
     roomDuration: v.number(),
-    visibility: v.string(),
+    visibility: v.union(v.literal("public"), v.literal("private")),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    const roomId = nanoid();
+    // const roomId = nanoid();
 
     if (!identity) {
       throw new Error("Unauthorised");
     }
 
     const room = await ctx.db.insert("room", {
-      roomId: roomId,
+      // roomId: roomId,
       name: args.battleName,
       hostId: identity.subject,
       playerIds: [identity.subject],

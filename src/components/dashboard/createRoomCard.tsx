@@ -30,6 +30,7 @@ interface FormData {
   maxPlayers: string;
   difficulty: "easy" | "medium" | "hard";
   roomDuration: string;
+  visibility: "public" | "private";
 }
 
 const BattleCreationForm: React.FC = () => {
@@ -41,6 +42,7 @@ const BattleCreationForm: React.FC = () => {
     maxPlayers: "2",
     difficulty: "easy",
     roomDuration: "15",
+    visibility: "private",
   };
 
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -87,10 +89,11 @@ const BattleCreationForm: React.FC = () => {
         difficulty: formData.difficulty,
         roomDuration: Number(formData.roomDuration),
         battleName: formData.battleName,
+        visibility: formData.visibility,
       })
-        .then((id) => {
+        .then((roomId) => {
           toast.success("Battle created!");
-          router.push(`/room/${id}`);
+          router.push(`/room/${roomId}`);
         })
         .catch(() => toast.error("Failed to create room"));
     } else {
@@ -178,6 +181,23 @@ const BattleCreationForm: React.FC = () => {
                   <SelectItem value="30">30 minutes</SelectItem>
                   <SelectItem value="45">45 minutes</SelectItem>
                   <SelectItem value="60">1 hour</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="visibility">Room visibility</Label>
+              <Select
+                value={formData.visibility}
+                onValueChange={(value) =>
+                  handleSelectChange("visibility", value)
+                }
+              >
+                <SelectTrigger id="visibility">
+                  <SelectValue placeholder="Select visibility" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="public">Public</SelectItem>
+                  <SelectItem value="private">Private</SelectItem>
                 </SelectContent>
               </Select>
             </div>
