@@ -1,3 +1,4 @@
+import { nanoid } from "@/lib/nanoId";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -11,15 +12,18 @@ export const createRoom = mutation({
       v.literal("hard")
     ),
     roomDuration: v.number(),
+    visibility: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
+    const roomId = nanoid();
 
     if (!identity) {
       throw new Error("Unauthorised");
     }
 
     const room = await ctx.db.insert("room", {
+      roomId: roomId,
       name: args.battleName,
       hostId: identity.subject,
       playerIds: [identity.subject],
@@ -27,6 +31,7 @@ export const createRoom = mutation({
       maxPlayers: args.maxPlayers,
       difficulty: args.difficulty,
       roomDuration: args.roomDuration,
+      visibility: args.visibility,
     });
 
     return room;
