@@ -33,4 +33,27 @@ export default defineSchema({
     ),
     roomDuration: v.number(),
   }),
+
+  questions: defineTable({
+    title: v.string(),
+    tags: v.array(v.string()),
+    problemStatement: v.string(),
+    testCases: v.array(
+      v.object({
+        input: v.string(),
+        output: v.string(),
+      })
+    ),
+    constraints: v.optional(v.array(v.string())),
+    difficulty: v.string(),
+    examples: v.array(
+      v.object({
+        input: v.string(),
+        output: v.string(),
+        explanation: v.string(),
+      })
+    ),
+    submissions: v.optional(v.array(v.id("submission"))),
+    viewers: v.optional(v.array(v.id("user"))),
+  }),
 });
