@@ -15,6 +15,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import Questions from "@/components/workspace/questionsSide/questionsSide";
+import EditorSide from "@/components/workspace/codeEditor/editorSide";
 
 const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
   const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
@@ -43,14 +44,12 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
         </header>
         <main className="flex-1">
           <ResizablePanelGroup direction="horizontal" className="h-full">
-            <ResizablePanel defaultSize={25} minSize={20} className="p-4">
+            <ResizablePanel defaultSize={35} minSize={20} className="p-4">
               <Questions />
             </ResizablePanel>
             <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={75} className="p-4">
-              <div className="flex h-full items-center justify-center p-2 rounded-lg ">
-                <span className="font-semibold">Code editor</span>
-              </div>
+            <ResizablePanel defaultSize={65} className="p-4" minSize={50}>
+              <EditorSide />
             </ResizablePanel>
           </ResizablePanelGroup>
         </main>
