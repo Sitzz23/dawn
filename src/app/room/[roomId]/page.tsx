@@ -25,12 +25,11 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronLeft, Clipboard, Mail } from "lucide-react";
+import { ChevronLeft, Clipboard, Eye, EyeOff, Mail } from "lucide-react";
 import { toast } from "sonner";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { PlayerCard } from "@/components/room/lobby/playerCard";
@@ -80,6 +79,20 @@ const Lobby = ({ params: { roomId } }: { params: { roomId: string } }) => {
         <ChevronLeft size={15} />
         &nbsp;Leave
       </Button>
+      <div className="absolute p-2 px-4 text-sm rounded-md top-4 right-4 border border-input bg-background hover:bg-accent hover:text-accent-foreground ">
+        {lobbyData?.visibility == "private" ? (
+          <div className="flex items-center justify-center gap-2">
+            <EyeOff size={15} />
+            <span>Private</span>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center gap-2">
+            <Eye size={15} />
+            <span>Public</span>
+          </div>
+        )}
+      </div>
+
       <Card className="w-[50%]">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
@@ -163,20 +176,16 @@ const Lobby = ({ params: { roomId } }: { params: { roomId: string } }) => {
               Start battle
             </Button>
           ) : (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="hover:cursor-not-allowed">
-                    <Button className="font-urban font-bold" disabled>
-                      Start battle
-                    </Button>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  Wait for host to start the battle
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="hover:cursor-not-allowed">
+                  <Button className="font-urban font-bold" disabled>
+                    Start battle
+                  </Button>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>Wait for host to start the battle</TooltipContent>
+            </Tooltip>
           )}
         </CardFooter>
       </Card>
