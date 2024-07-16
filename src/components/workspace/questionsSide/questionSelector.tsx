@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -14,13 +14,19 @@ const QuestionSelector: React.FC = () => {
   const { questions, selectedQuestionId, setSelectedQuestionId } =
     useQuestionStore();
 
+  useEffect(() => {
+    if (questions.length > 0 && !selectedQuestionId) {
+      setSelectedQuestionId(questions[0]._id);
+    }
+  }, [questions, selectedQuestionId, setSelectedQuestionId]);
+
   return (
     <Select
       onValueChange={(value) => setSelectedQuestionId(value as Id<"questions">)}
       value={selectedQuestionId || undefined}
     >
       <SelectTrigger className="w-full">
-        <SelectValue />
+        <SelectValue placeholder="Select a question" />
       </SelectTrigger>
       <SelectContent>
         {questions.map((q) => (

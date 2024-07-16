@@ -14,7 +14,6 @@ export type Question = {
   //   submissions?: Id<"submission">[];
   //   viewers?: Id<"user">[];
 };
-
 type QuestionStore = {
   questions: Question[];
   selectedQuestionId: Id<"questions"> | null;
@@ -26,8 +25,14 @@ type QuestionStore = {
 export const useQuestionStore = create<QuestionStore>((set, get) => ({
   questions: [],
   selectedQuestionId: null,
-  setQuestions: (questions) => set({ questions }),
+  setQuestions: (questions) =>
+    set((state) => ({
+      questions,
+      selectedQuestionId: state.selectedQuestionId || questions[0]?._id || null,
+    })),
   setSelectedQuestionId: (id) => set({ selectedQuestionId: id }),
-  getSelectedQuestion: () =>
-    get().questions.find((q) => q._id === get().selectedQuestionId),
+  getSelectedQuestion: () => {
+    const state = get();
+    return state.questions.find((q) => q._id === state.selectedQuestionId);
+  },
 }));
