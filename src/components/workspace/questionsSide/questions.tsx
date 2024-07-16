@@ -1,64 +1,18 @@
-import React, { useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { useQuestionStore } from "@/store/questionsStore";
 
-// Updated Question type to match Convex schema
-type Question = {
-  _id: Id<"questions">;
-  _creationTime: number;
-  title: string;
-  tags: string[];
-  problemStatement: string;
-  testCases: Array<{ input: string; output: string }>;
-  constraints?: string[];
-  difficulty: string;
-  examples: Array<{ input: string; output: string; explanation: string }>;
-//   submissions?: Id<"submission">[];
-  viewers?: Id<"user">[];
-};
+const QuestionDisplay: React.FC = () => {
+  const selectedQuestion = useQuestionStore((state) =>
+    state.getSelectedQuestion()
+  );
 
-type QuestionDisplayProps = {
-  questions: Question[];
-};
-
-const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ questions }) => {
-  const [selectedQuestionId, setSelectedQuestionId] = useState<
-    Id<"questions"> | undefined
-  >(questions[0]?._id);
-
-  const selectedQuestion = questions.find((q) => q._id === selectedQuestionId);
-
-  if (!selectedQuestion) return <div>No questions available</div>;
+  if (!selectedQuestion) return <div>No question selected</div>;
 
   return (
     <div className="space-y-6">
-      <Select
-        onValueChange={(value) =>
-          setSelectedQuestionId(value as Id<"questions">)
-        }
-        value={selectedQuestionId}
-      >
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select a question" />
-        </SelectTrigger>
-        <SelectContent>
-          {questions.map((q) => (
-            <SelectItem key={q._id} value={q._id}>
-              {q.title}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
       <div>
         <h2 className="text-2xl font-bold mb-2">{selectedQuestion.title}</h2>
         <Badge variant="outline">{selectedQuestion.difficulty}</Badge>

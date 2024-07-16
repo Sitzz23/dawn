@@ -1,9 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "convex/react";
-
 import { Clock } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { api } from "../../../../../convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
 import RoomTimer from "@/components/workspace/timer";
@@ -16,10 +15,16 @@ import {
 } from "@/components/ui/resizable";
 import QuestionSide from "@/components/workspace/questionsSide/questionsSide";
 import EditorSide from "@/components/workspace/codeEditor/editorSide";
+import { useRoomStore } from "@/store/roomStore";
 
 const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
   const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
+  const setRoom = useRoomStore((state) => state.setRoom);
   const { user } = useUser();
+
+  useEffect(() => {
+    if (lobbyData) setRoom(lobbyData);
+  }, [lobbyData, setRoom]);
 
   return (
     <div className="max-h-screen w-full pl-[56px] flex">
