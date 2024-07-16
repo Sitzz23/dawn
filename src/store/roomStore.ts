@@ -12,7 +12,6 @@ export type Room = {
   completedAt?: number;
   status: "waiting" | "in_progress" | "completed";
   maxPlayers: number;
-  difficulty: "easy" | "medium" | "hard";
   roomDuration: number;
 };
 type RoomStore = {

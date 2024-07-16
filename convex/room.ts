@@ -6,11 +6,6 @@ export const createRoom = mutation({
   args: {
     battleName: v.string(),
     maxPlayers: v.number(),
-    difficulty: v.union(
-      v.literal("easy"),
-      v.literal("medium"),
-      v.literal("hard")
-    ),
     roomDuration: v.number(),
     visibility: v.union(v.literal("public"), v.literal("private")),
   },
@@ -29,7 +24,6 @@ export const createRoom = mutation({
       playerIds: [identity.subject],
       status: "waiting",
       maxPlayers: args.maxPlayers,
-      difficulty: args.difficulty,
       roomDuration: args.roomDuration,
       visibility: args.visibility,
     });

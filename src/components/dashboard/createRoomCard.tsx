@@ -28,7 +28,6 @@ import { useRouter } from "next/navigation";
 interface FormData {
   battleName: string;
   maxPlayers: string;
-  difficulty: "easy" | "medium" | "hard";
   roomDuration: string;
   visibility: "public" | "private";
 }
@@ -40,7 +39,6 @@ const BattleCreationForm: React.FC = () => {
   const initialFormData: FormData = {
     battleName: "",
     maxPlayers: "2",
-    difficulty: "easy",
     roomDuration: "15",
     visibility: "private",
   };
@@ -86,7 +84,6 @@ const BattleCreationForm: React.FC = () => {
       console.log("Form submitted:", formData);
       mutate({
         maxPlayers: Number(formData.maxPlayers),
-        difficulty: formData.difficulty,
         roomDuration: Number(formData.roomDuration),
         battleName: formData.battleName,
         visibility: formData.visibility,
@@ -144,24 +141,6 @@ const BattleCreationForm: React.FC = () => {
                   <SelectItem value="4">4 Players</SelectItem>
                   <SelectItem value="6">6 Players</SelectItem>
                   <SelectItem value="8">8 Players</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="difficulty">Difficulty</Label>
-              <Select
-                value={formData.difficulty}
-                onValueChange={(value) =>
-                  handleSelectChange("difficulty", value)
-                }
-              >
-                <SelectTrigger id="difficulty">
-                  <SelectValue placeholder="Select difficulty" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="easy">Easy</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="hard">Hard</SelectItem>
                 </SelectContent>
               </Select>
             </div>

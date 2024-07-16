@@ -26,12 +26,8 @@ export default defineSchema({
       v.literal("completed")
     ),
     maxPlayers: v.number(),
-    difficulty: v.union(
-      v.literal("easy"),
-      v.literal("medium"),
-      v.literal("hard")
-    ),
     roomDuration: v.number(),
+    questions: v.optional(v.array(v.id("questions"))),
   }),
 
   questions: defineTable({
