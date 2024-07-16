@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, ChangeEvent } from "react";
+import type React from "react";
+import { useState, type ChangeEvent } from "react";
 import {
   Card,
   CardContent,

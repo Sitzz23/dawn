@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { getRandomQuestions } from "./workspace";
 
 export const getLobbyDetails = query({
   args: { roomId: v.id("room") },
@@ -13,8 +14,11 @@ export const getLobbyDetails = query({
 });
 
 export const startRoom = mutation({
-  args: { roomId: v.id("room") },
-  handler: async (ctx, { roomId }) => {
+  args: {
+    roomId: v.id("room"),
+    questions: v.optional(v.array(v.id("questions"))),
+  },
+  handler: async (ctx, { roomId, questions }) => {
     const room = await ctx.db.get(roomId);
 
     if (!room) {
@@ -30,6 +34,7 @@ export const startRoom = mutation({
     const updatedRoom = await ctx.db.patch(roomId, {
       status: "in_progress",
       startedAt: now,
+      questions: questions,
     });
 
     return updatedRoom;

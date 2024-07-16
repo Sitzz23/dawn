@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import { Badge } from "@/components/ui/badge";
@@ -36,27 +36,42 @@ import { PlayerCard } from "@/components/room/lobby/playerCard";
 import { convex } from "@/lib/convexHttpClient";
 import useApiMutation from "@/hooks/useApiMutation";
 import { useRoomStore } from "@/store/roomStore";
+import { Question } from "@/store/questionsStore";
+import { Id } from "../../../../convex/_generated/dataModel";
 
-const Lobby = ({ params: { roomId } }: { params: { roomId: string } }) => {
+const Lobby = ({ params: { roomId } }: { params: { roomId: Id<"room"> } }) => {
   const router = useRouter();
   const { user } = useUser();
   const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
   const { mutate } = useApiMutation(api.room.removePlayerFromRoom);
   const setRoom = useRoomStore((state) => state.setRoom);
 
-  {
+  useEffect(() => {
     lobbyData && setRoom(lobbyData);
-  }
+  }, [lobbyData, setRoom]);
 
   const userDetails = useQuery(api.user.getUserDetails, {
     userIds: lobbyData?.playerIds || [],
   });
 
-  const startRoom = () => {
-    convex.mutation(api.lobby.startRoom, {
-      roomId,
-    } as any);
-    router.replace(`/room/${roomId}/workspace`);
+  const startRoom = async () => {
+    const questions = await convex.query(api.workspace.getRandomQuestions, {
+      roomDuration: lobbyData?.roomDuration!,
+    });
+
+    if (questions && questions.length > 0) {
+      // Extract only the question IDs
+      const questionIds = questions.map((question: Question) => question._id);
+
+      convex.mutation(api.lobby.startRoom, {
+        roomId,
+        questions: questionIds,
+      });
+
+      router.replace(`/room/${roomId}/workspace`);
+    } else {
+      toast.error("Error creating the requested room!");
+    }
   };
 
   const copyRoomId = () => {
