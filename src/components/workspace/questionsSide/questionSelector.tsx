@@ -27,7 +27,7 @@ const QuestionSelector: React.FC = () => {
   return (
     <Select
       onValueChange={(value) => setSelectedQuestionId(value as Id<"questions">)}
-      value={selectedQuestionId || ""}
+      value={selectedQuestionId as string}
     >
       <SelectTrigger className="w-1/4">
         <SelectValue placeholder="Select a question" />

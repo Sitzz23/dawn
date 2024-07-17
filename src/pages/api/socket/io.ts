@@ -26,7 +26,10 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
       s.on("join-room", async (roomId) => {
         console.log(`User joining room ${roomId}`);
         try {
-          await convex.mutation(api.room.addPlayerToRoom, { roomId });
+          // await convex.mutation(api.room.addPlayerToRoom, {
+          //   roomId,
+          //   userId: undefined,
+          // });
           s.join(roomId);
           // console.log(`User ${userId} successfully joined room ${roomId}`);
         } catch (error) {
