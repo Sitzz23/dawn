@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
@@ -38,13 +38,15 @@ import useApiMutation from "@/hooks/useApiMutation";
 import useRoomStore from "@/store/roomStore";
 import { Question } from "@/store/questionsStore";
 import { Id } from "../../../../convex/_generated/dataModel";
+import useUserStore from "@/store/userStore";
 
 const Lobby = ({ params: { roomId } }: { params: { roomId: Id<"room"> } }) => {
   const router = useRouter();
   const { user } = useUser();
   const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
-  const { mutate } = useApiMutation(api.room.removePlayerFromRoom);
+  const mutate = useMutation(api.room.removePlayerFromRoom);
   const setRoom = useRoomStore((state) => state.setRoom);
+  const { currentUserId } = useUserStore();
 
   useEffect(() => {
     lobbyData && setRoom(lobbyData);
@@ -91,10 +93,15 @@ const Lobby = ({ params: { roomId } }: { params: { roomId: Id<"room"> } }) => {
         variant={"outline"}
         className="absolute top-4 left-4"
         onClick={() => {
-          console.log(roomId);
-          mutate({ roomId }).then(() => {
-            router.replace("/dashboard");
-          });
+          if (currentUserId) {
+            console.log(roomId);
+            mutate({
+              roomId,
+              playerId: currentUserId,
+            }).then(() => {
+              router.replace("/dashboard");
+            });
+          }
         }}
       >
         <ChevronLeft size={15} />

@@ -75,16 +75,15 @@ export const addPlayerToRoom = mutation({
 });
 
 export const removePlayerFromRoom = mutation({
-  args: { roomId: v.id("room") },
+  args: { roomId: v.id("room"), playerId: v.id("user") },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
     const room = await ctx.db.get(args.roomId);
 
     if (!room) throw new Error("Room not found");
-    if (!identity) throw new Error("User not found");
+    if (!args.playerId) throw new Error("User not found");
 
     const updatedPlayerIds = room.playerIds.filter(
-      (id) => id !== identity.subject
+      (id) => id !== args.playerId
     );
 
     return await ctx.db.patch(args.roomId, {
