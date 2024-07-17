@@ -39,7 +39,7 @@ export const getRandomQuestions = query({
       const questions = await ctx.db
         .query("questions")
         .filter((q) => q.eq(q.field("difficulty"), difficulty))
-        .order("desc")
+        .order("asc")
         .collect();
 
       for (let i = questions.length - 1; i > 0; i--) {
@@ -50,7 +50,6 @@ export const getRandomQuestions = query({
       return questions.slice(0, count);
     };
 
-    // Get random questions for each difficulty
     const easyQuestions = await getRandomQuestionsForDifficulty(
       "easy",
       easyCount
@@ -64,19 +63,35 @@ export const getRandomQuestions = query({
       hardCount
     );
 
-    // Combine all questions
     const allQuestions = [
       ...easyQuestions,
       ...mediumQuestions,
       ...hardQuestions,
     ];
 
-    // Shuffle the combined questions for an extra layer of randomness
     for (let i = allQuestions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [allQuestions[i], allQuestions[j]] = [allQuestions[j], allQuestions[i]];
     }
 
     return allQuestions;
+  },
+});
+
+export const fetchQuestionsByIds = query({
+  args: { questionIds: v.optional(v.array(v.id("questions"))) },
+  handler: async (ctx, args) => {
+    const { questionIds } = args;
+
+    if (!questionIds) {
+      throw new Error("No questions generated!");
+    }
+
+    const questionsPromises = questionIds.map((id) => ctx.db.get(id));
+    const questions = await Promise.all(questionsPromises);
+
+    const validQuestions = questions.filter((q) => q !== null);
+
+    return validQuestions;
   },
 });

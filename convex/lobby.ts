@@ -1,6 +1,5 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
-import { getRandomQuestions } from "./workspace";
 
 export const getLobbyDetails = query({
   args: { roomId: v.id("room") },
