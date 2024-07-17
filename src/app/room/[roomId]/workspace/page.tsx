@@ -1,12 +1,9 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { useQuery } from "convex/react";
-import { Clock } from "lucide-react";
 import React, { useEffect } from "react";
 import { api } from "../../../../../convex/_generated/api";
-import RoomTimer from "@/components/workspace/timer";
 import WorkspaceSidebar from "@/components/workspace/sidebar";
-import { Skeleton } from "@/components/ui/skeleton";
+
 import {
   ResizableHandle,
   ResizablePanel,
@@ -26,7 +23,7 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
   }, [lobbyData, setRoom]);
 
   return (
-    <div className="max-h-screen w-full pl-[56px] flex">
+    <div className="h-screen w-full pl-[56px] flex">
       <WorkspaceSidebar />
       <div className="flex-1 flex flex-col w-full h-full">
         <WorkspaceHeader questionIds={lobbyData?.questions} />

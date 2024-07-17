@@ -9,6 +9,7 @@ import useQuestionStore from "@/store/questionsStore";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 import useRoomStore from "@/store/roomStore";
+import QuestionSelector from "./questionsSide/questionSelector";
 
 const WorkspaceHeader = ({
   questionIds,
@@ -27,10 +28,11 @@ const WorkspaceHeader = ({
   }, [questionData, setQuestions]);
 
   return (
-    <header className="flex h-[57px] items-center gap-1  bg-background pl-4 pr-2 justify-between">
+    <header className="flex h-[57px] items-center gap-1  border-b border-secondary bg-background  p-2 justify-between">
       {/* <h1 className="text-xl font-semibold">
             {user?.firstName}&apos;s workspace
           </h1> */}
+      <QuestionSelector />
       {room && room.startedAt ? (
         <RoomTimer
           serverTimestamp={room.startedAt}
