@@ -18,12 +18,16 @@ import { convex } from "../../lib/convexHttpClient";
 import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import useApiMutation from "@/hooks/useApiMutation";
+import useUserStore from "@/store/userStore";
+import { useMutation } from "convex/react";
+import { Id } from "../../../convex/_generated/dataModel";
 
 const JoinRoomCard = () => {
   const router = useRouter();
   const [battleCode, setBattleCode] = useState("");
   const [battleCodeError, setBattleCodeError] = useState(false);
   const { mutate, pending } = useApiMutation(api.room.addPlayerToRoom);
+  const { currentUserId } = useUserStore();
 
   const validateBattleCode = (code: string): boolean => {
     if (!code.trim()) {
@@ -56,11 +60,12 @@ const JoinRoomCard = () => {
   const handleRouting = async (roomId: any) => {
     const roomStatus = await convex.query(api.room.getRoomStatus, { roomId });
 
-    if (roomStatus) {
+    if (roomStatus && currentUserId) {
       switch (roomStatus) {
         case "waiting":
           mutate({
-            roomId: battleCode,
+            roomId: battleCode as Id<"room">,
+            userId: currentUserId,
           })
             .then(() => {
               router.push(`/room/${battleCode}`);
