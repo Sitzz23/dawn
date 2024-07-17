@@ -2,7 +2,7 @@ import type React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useQuestionStore } from "@/store/questionsStore";
+import useQuestionStore from "@/store/questionsStore";
 
 const QuestionDisplay: React.FC = () => {
   const selectedQuestion = useQuestionStore((state) =>
