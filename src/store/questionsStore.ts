@@ -19,7 +19,7 @@ export type Question = {
 
 type QuestionStore = {
   questions: Question[] | null;
-  selectedQuestionId: Id<"questions"> | null;
+  selectedQuestionId: Id<"questions"> | undefined;
   setQuestions: (questions: Question[]) => void;
   setSelectedQuestionId: (id: Id<"questions">) => void;
   // getQuestions: () => Question[] | null;
@@ -27,28 +27,19 @@ type QuestionStore = {
 };
 
 const useQuestionStore = create<QuestionStore>()(
-  devtools(
-    persist(
-      (set, get) => ({
-        questions: null,
-        selectedQuestionId: null,
-        setQuestions: (questions: Question[]) =>
-          set({ questions }, false, "setQuestions"),
-        setSelectedQuestionId: (id: Id<"questions">) =>
-          set({ selectedQuestionId: id }, false, "setSelectedQuestionId"),
-        // getQuestions: () => get().questions,
-        getSelectedQuestion: () => {
-          const { questions, selectedQuestionId } = get();
-          return questions?.find((q) => q._id === selectedQuestionId) || null;
-        },
-      }),
-      {
-        name: "question-storage",
-        storage: createJSONStorage(() => localStorage),
-      }
-    ),
-    { name: "QuestionStore" }
-  )
+  devtools((set, get) => ({
+    questions: null,
+    selectedQuestionId: undefined,
+    setQuestions: (questions: Question[]) =>
+      set({ questions }, false, "setQuestions"),
+    setSelectedQuestionId: (id: Id<"questions">) =>
+      set({ selectedQuestionId: id }, false, "setSelectedQuestionId"),
+    // getQuestions: () => get().questions,
+    getSelectedQuestion: () => {
+      const { questions, selectedQuestionId } = get();
+      return questions?.find((q) => q._id === selectedQuestionId) || null;
+    },
+  }))
 );
 
 export default useQuestionStore;
