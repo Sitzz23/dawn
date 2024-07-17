@@ -4,7 +4,7 @@ type Props = {};
 
 const EditorSide = (props: Props) => {
   return (
-    <div className="flex h-full items-center justify-center p-2 rounded-lg ">
+    <div className=" content-center h-full text-center p-2 rounded-lg ">
       <span className="font-semibold">Editor</span>
     </div>
   );

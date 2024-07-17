@@ -15,16 +15,21 @@ import {
 } from "@/components/ui/resizable";
 import QuestionSide from "@/components/workspace/questionsSide/questionsSide";
 import EditorSide from "@/components/workspace/codeEditor/editorSide";
-import { useRoomStore } from "@/store/roomStore";
+import useRoomStore from "@/store/roomStore";
 
 const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
-  const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
-  const setRoom = useRoomStore((state) => state.setRoom);
+  // const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
+  // const setRoom = useRoomStore((state) => state.setRoom);
+  const { room } = useRoomStore();
   const { user } = useUser();
 
+  // useEffect(() => {
+  //   if (lobbyData) setRoom(lobbyData);
+  // }, [lobbyData, setRoom]);
+
   useEffect(() => {
-    if (lobbyData) setRoom(lobbyData);
-  }, [lobbyData, setRoom]);
+    console.log("lbdata", room);
+  }, [room]);
 
   return (
     <div className="max-h-screen w-full pl-[56px] flex">
@@ -34,10 +39,10 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
           <h1 className="text-xl font-semibold">
             {user?.firstName}&apos;s workspace
           </h1>
-          {lobbyData && lobbyData.startedAt ? (
+          {room && room.startedAt ? (
             <RoomTimer
-              serverTimestamp={lobbyData.startedAt}
-              roomDuration={lobbyData.roomDuration}
+              serverTimestamp={room.startedAt}
+              roomDuration={room.roomDuration}
               roomId={roomId}
             />
           ) : (
@@ -48,20 +53,14 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
           )}
         </header>
         <main className="flex-1">
-          <ResizablePanelGroup direction="horizontal" className="max-h-screen">
-            <ResizablePanel
-              defaultSize={35}
-              minSize={20}
-              className="p-4 overflow-y-auto"
-            >
-              {lobbyData ? (
-                <QuestionSide roomDuration={lobbyData.roomDuration} />
-              ) : (
-                <div className="space-y-2">
+          <ResizablePanelGroup direction="horizontal" className="h-screen">
+            <ResizablePanel defaultSize={35} minSize={20} className="p-4">
+              <QuestionSide />
+
+              {/* <div className="space-y-2">
                   <Skeleton className="h-4 w-[250px]" />
                   <Skeleton className="h-4 w-[200px]" />
-                </div>
-              )}
+                </div> */}
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={65} className="p-4" minSize={50}>

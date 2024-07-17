@@ -35,7 +35,7 @@ import {
 import { PlayerCard } from "@/components/room/lobby/playerCard";
 import { convex } from "@/lib/convexHttpClient";
 import useApiMutation from "@/hooks/useApiMutation";
-import { useRoomStore } from "@/store/roomStore";
+import useRoomStore from "@/store/roomStore";
 import { Question } from "@/store/questionsStore";
 import { Id } from "../../../../convex/_generated/dataModel";
 
@@ -48,7 +48,12 @@ const Lobby = ({ params: { roomId } }: { params: { roomId: Id<"room"> } }) => {
 
   useEffect(() => {
     lobbyData && setRoom(lobbyData);
+    // console.log("lbdata", lobbyData);
   }, [lobbyData, setRoom]);
+
+  // useEffect(() => {
+  //   console.log("lbdata", room);
+  // }, [room]);
 
   const userDetails = useQuery(api.user.getUserDetails, {
     userIds: lobbyData?.playerIds || [],
