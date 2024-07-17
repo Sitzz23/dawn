@@ -8,22 +8,26 @@ import {
 } from "@/components/ui/select";
 
 import { Id } from "../../../../convex/_generated/dataModel";
-import { useQuestionStore } from "@/store/questionsStore";
+import useQuestionStore from "@/store/questionsStore";
 
 const QuestionSelector: React.FC = () => {
   const { questions, selectedQuestionId, setSelectedQuestionId } =
     useQuestionStore();
 
   useEffect(() => {
-    if (questions.length > 0 && !selectedQuestionId) {
+    if (questions && questions.length > 0 && !selectedQuestionId) {
       setSelectedQuestionId(questions[0]._id);
     }
   }, [questions, selectedQuestionId, setSelectedQuestionId]);
 
+  if (!questions) {
+    return <div>Loading questions...</div>;
+  }
+
   return (
     <Select
       onValueChange={(value) => setSelectedQuestionId(value as Id<"questions">)}
-      value={selectedQuestionId || undefined}
+      value={selectedQuestionId || ""}
     >
       <SelectTrigger className="w-full">
         <SelectValue placeholder="Select a question" />

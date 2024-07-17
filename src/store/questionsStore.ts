@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { devtools } from "zustand/middleware";
 import { Id } from "../../convex/_generated/dataModel";
 
 export type Question = {
@@ -14,25 +16,39 @@ export type Question = {
   //   submissions?: Id<"submission">[];
   //   viewers?: Id<"user">[];
 };
+
 type QuestionStore = {
-  questions: Question[];
+  questions: Question[] | null;
   selectedQuestionId: Id<"questions"> | null;
   setQuestions: (questions: Question[]) => void;
-  setSelectedQuestionId: (id: Id<"questions"> | null) => void;
-  getSelectedQuestion: () => Question | undefined;
+  setSelectedQuestionId: (id: Id<"questions">) => void;
+  // getQuestions: () => Question[] | null;
+  getSelectedQuestion: () => Question | null;
 };
 
-export const useQuestionStore = create<QuestionStore>((set, get) => ({
-  questions: [],
-  selectedQuestionId: null,
-  setQuestions: (questions) =>
-    set((state) => ({
-      questions,
-      selectedQuestionId: state.selectedQuestionId || questions[0]?._id || null,
-    })),
-  setSelectedQuestionId: (id) => set({ selectedQuestionId: id }),
-  getSelectedQuestion: () => {
-    const state = get();
-    return state.questions.find((q) => q._id === state.selectedQuestionId);
-  },
-}));
+const useQuestionStore = create<QuestionStore>()(
+  devtools(
+    persist(
+      (set, get) => ({
+        questions: null,
+        selectedQuestionId: null,
+        setQuestions: (questions: Question[]) =>
+          set({ questions }, false, "setQuestions"),
+        setSelectedQuestionId: (id: Id<"questions">) =>
+          set({ selectedQuestionId: id }, false, "setSelectedQuestionId"),
+        // getQuestions: () => get().questions,
+        getSelectedQuestion: () => {
+          const { questions, selectedQuestionId } = get();
+          return questions?.find((q) => q._id === selectedQuestionId) || null;
+        },
+      }),
+      {
+        name: "question-storage",
+        storage: createJSONStorage(() => localStorage),
+      }
+    ),
+    { name: "QuestionStore" }
+  )
+);
+
+export default useQuestionStore;
