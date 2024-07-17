@@ -25,6 +25,7 @@ import { cn } from "@/lib/utils";
 import { api } from "../../../convex/_generated/api";
 import useApiMutation from "@/hooks/useApiMutation";
 import { useRouter } from "next/navigation";
+import useUserStore from "@/store/userStore";
 
 interface FormData {
   battleName: string;
@@ -36,6 +37,7 @@ interface FormData {
 const BattleCreationForm: React.FC = () => {
   const { mutate, pending } = useApiMutation(api.room.createRoom);
   const router = useRouter();
+  const { currentUserId } = useUserStore();
 
   const initialFormData: FormData = {
     battleName: "",
@@ -81,13 +83,14 @@ const BattleCreationForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateBattleName(formData.battleName)) {
+    if (validateBattleName(formData.battleName) && currentUserId) {
       console.log("Form submitted:", formData);
       mutate({
         maxPlayers: Number(formData.maxPlayers),
         roomDuration: Number(formData.roomDuration),
         battleName: formData.battleName,
         visibility: formData.visibility,
+        playerIds: [currentUserId],
       })
         .then((roomId) => {
           toast.success("Battle created!");
