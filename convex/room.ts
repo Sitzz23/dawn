@@ -8,20 +8,20 @@ export const createRoom = mutation({
     maxPlayers: v.number(),
     roomDuration: v.number(),
     visibility: v.union(v.literal("public"), v.literal("private")),
+    playerIds: v.array(v.id("user")),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
     // const roomId = nanoid();
 
-    if (!identity) {
+    if (!args.playerIds) {
       throw new Error("Unauthorised");
     }
 
     const room = await ctx.db.insert("room", {
       // roomId: roomId,
       name: args.battleName,
-      hostId: identity.subject,
-      playerIds: [identity.subject],
+      hostId: args.playerIds[0],
+      playerIds: args.playerIds,
       status: "waiting",
       maxPlayers: args.maxPlayers,
       roomDuration: args.roomDuration,
@@ -47,14 +47,14 @@ export const getRoomStatus = query({
 });
 
 export const addPlayerToRoom = mutation({
-  args: { roomId: v.id("room") },
+  args: { roomId: v.id("room"), userId: v.id("user") },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
+    const { userId } = args;
     const room = await ctx.db.get(args.roomId);
     if (!room) throw new Error("Room not found");
-    if (!identity) throw new Error("User not found");
+    if (!userId) throw new Error("User not found");
 
-    const isUserInRoom = room.playerIds.includes(identity.subject);
+    const isUserInRoom = room.playerIds.includes(userId);
 
     if (room.playerIds.length >= room.maxPlayers && !isUserInRoom) {
       throw new Error("Room is full");
@@ -64,9 +64,9 @@ export const addPlayerToRoom = mutation({
       throw new Error("Battle has already started!");
     }
 
-    const updatedPlayerIds = room.playerIds.includes(identity.subject)
+    const updatedPlayerIds = room.playerIds.includes(userId)
       ? room.playerIds
-      : [...room.playerIds, identity.subject];
+      : [...room.playerIds, userId];
 
     return await ctx.db.patch(args.roomId, {
       playerIds: updatedPlayerIds,
