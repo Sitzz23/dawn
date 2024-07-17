@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import { Badge } from "@/components/ui/badge";
@@ -45,19 +45,32 @@ const Lobby = ({ params: { roomId } }: { params: { roomId: Id<"room"> } }) => {
   const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
   const { mutate } = useApiMutation(api.room.removePlayerFromRoom);
   const setRoom = useRoomStore((state) => state.setRoom);
+  const playerIds = useMemo(
+    () => lobbyData?.playerIds || [],
+    [lobbyData?.playerIds]
+  );
+  const playersDetails = useQuery(api.user.getPlayersDetails, {
+    playersIds: playerIds,
+  });
+  // const [playersDetails, setPlayersDetails] = useState(null);
 
   useEffect(() => {
     lobbyData && setRoom(lobbyData);
-    // console.log("lbdata", lobbyData);
+    console.log("updated", lobbyData);
   }, [lobbyData, setRoom]);
 
   // useEffect(() => {
-  //   console.log("lbdata", room);
-  // }, [room]);
+  //   if (lobbyData?.playerIds) {
+  //     const details = convex.query(api.user.getPlayersDetails, {
+  //       playersIds: lobbyData?.playerIds || [],
+  //     });
+  //     setPlayersDetails(details);
+  //   }
+  // }, [lobbyData?.playerIds]);
 
-  const userDetails = useQuery(api.user.getUserDetails, {
-    userIds: lobbyData?.playerIds || [],
-  });
+  // const playersDetails = useQuery(api.user.getPlayersDetails, {
+  //   playersIds: lobbyData?.playerIds || [],
+  // });
 
   const startRoom = async () => {
     const questions = await convex.query(api.workspace.getRandomQuestions, {
@@ -133,9 +146,9 @@ const Lobby = ({ params: { roomId } }: { params: { roomId: Id<"room"> } }) => {
           </CardTitle>
           <CardDescription>Waiting area for players to join</CardDescription>
         </CardHeader>
-        {userDetails && userDetails.length > 0 && lobbyData ? (
+        {playersDetails && playersDetails.length > 0 && lobbyData ? (
           <CardContent className="grid grid-cols-2 gap-6">
-            {userDetails.map((player) => (
+            {playersDetails.map((player) => (
               <PlayerCard
                 key={player.tokenIdentifier}
                 player={player}
