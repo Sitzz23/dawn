@@ -1,14 +1,9 @@
 "use client";
 
 import Balancer from "react-wrap-balancer";
-import { SignUpButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
-import useApiMutation from "@/hooks/useApiMutation";
-import { api } from "../../../convex/_generated/api";
 
 export default function Home() {
-  const { mutate } = useApiMutation(api.user.addUser);
-
   return (
     <>
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">

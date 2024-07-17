@@ -32,30 +32,48 @@ export const addUser = mutation({
   },
 });
 
-export const getUserDetails = query({
-  args: { userIds: v.array(v.string()) },
+// export const getPlayersDetails = query({
+//   args: { playersIds: v.array(v.string()) },
+//   handler: async (ctx, args) => {
+//     console.log("Received userIds:", args.playersIds);
+
+//     const results = await ctx.db
+//       .query("user")
+//       .filter((q) =>
+//         args.playersIds.reduce(
+//           (acc, userId) => q.or(acc, q.eq(q.field("tokenIdentifier"), userId)),
+//           q.eq(q.field("tokenIdentifier"), "")
+//         )
+//       )
+//       // .order("desc")
+//       .collect();
+
+//     console.log("Query results:", results);
+
+//     if (results.length !== args.playersIds.length) {
+//       console.warn(
+//         `Mismatch: Found ${results.length} users for ${args.playersIds.length} userIds`
+//       );
+//     }
+
+//     return results;
+//   },
+// });
+
+export const getPlayersDetails = query({
+  args: { playersIds: v.array(v.id("user")) },
   handler: async (ctx, args) => {
-    console.log("Received userIds:", args.userIds);
+    const { playersIds } = args;
 
-    const results = await ctx.db
-      .query("user")
-      .filter((q) =>
-        args.userIds.reduce(
-          (acc, userId) => q.or(acc, q.eq(q.field("tokenIdentifier"), userId)),
-          q.eq(q.field("tokenIdentifier"), "")
-        )
-      )
-      // .order("desc")
-      .collect();
-
-    console.log("Query results:", results);
-
-    if (results.length !== args.userIds.length) {
-      console.warn(
-        `Mismatch: Found ${results.length} users for ${args.userIds.length} userIds`
-      );
+    if (!playersIds) {
+      throw new Error("No players joined!");
     }
 
-    return results;
+    const questionsPromises = playersIds.map((id) => ctx.db.get(id));
+    const questions = await Promise.all(questionsPromises);
+
+    const validQuestions = questions.filter((q) => q !== null);
+
+    return validQuestions;
   },
 });
