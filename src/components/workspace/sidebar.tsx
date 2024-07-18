@@ -2,10 +2,16 @@ import React from "react";
 import { Button } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Bot, Code2, LifeBuoy, SquareTerminal, SquareUser } from "lucide-react";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
+import useRoomStore from "@/store/roomStore";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-type Props = {};
-
-const WorkspaceSidebar = (props: Props) => {
+const WorkspaceSidebar = () => {
+  const { room } = useRoomStore();
+  const playersDetails = useQuery(api.user.getPlayersDetails, {
+    playersIds: room?.playerIds || [],
+  });
   return (
     <aside className="inset-y fixed left-0 z-20 flex h-full flex-col border-r">
       <div className="border-b p-2">
@@ -13,7 +19,7 @@ const WorkspaceSidebar = (props: Props) => {
           <p className="text-2xl">✦</p>
         </Button>
       </div>
-      <nav className="grid gap-1 p-2">
+      {/* <nav className="grid gap-1 p-2">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -59,8 +65,8 @@ const WorkspaceSidebar = (props: Props) => {
             API
           </TooltipContent>
         </Tooltip>
-      </nav>
-      <nav className="mt-auto grid gap-1 p-2">
+      </nav> */}
+      {/* <nav className="mt-auto grid gap-1 p-2">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -91,6 +97,21 @@ const WorkspaceSidebar = (props: Props) => {
             Account
           </TooltipContent>
         </Tooltip>
+      </nav> */}
+      <nav className="flex flex-col items-center gap-4 py-4 mx-2">
+        {playersDetails?.map((player, index) => (
+          <Tooltip key={index}>
+            <TooltipTrigger asChild>
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={player.pictureUrl} alt={player.name} />
+                <AvatarFallback>{player.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+            </TooltipTrigger>
+            <TooltipContent side="right" sideOffset={5}>
+              {player.name}
+            </TooltipContent>
+          </Tooltip>
+        ))}
       </nav>
     </aside>
   );
