@@ -11,7 +11,7 @@ export type Question = {
   problemStatement: string;
   testCases: Array<{ input: string; output: string }>;
   constraints?: string[];
-  difficulty: string;
+  difficulty: "easy" | "medium" | "hard";
   examples: Array<{ input: string; output: string; explanation: string }>;
   //   submissions?: Id<"submission">[];
   //   viewers?: Id<"user">[];
@@ -22,23 +22,30 @@ type QuestionStore = {
   selectedQuestionId: Id<"questions"> | undefined;
   setQuestions: (questions: Question[]) => void;
   setSelectedQuestionId: (id: Id<"questions">) => void;
-  // getQuestions: () => Question[] | null;
   getSelectedQuestion: () => Question | null;
+  resetSelectedQuestion: () => void;
+  resetStore: () => void;
+};
+
+const initialState = {
+  questions: null,
+  selectedQuestionId: undefined,
 };
 
 const useQuestionStore = create<QuestionStore>()(
   devtools((set, get) => ({
-    questions: null,
-    selectedQuestionId: undefined,
+    ...initialState,
     setQuestions: (questions: Question[]) =>
       set({ questions }, false, "setQuestions"),
     setSelectedQuestionId: (id: Id<"questions">) =>
       set({ selectedQuestionId: id }, false, "setSelectedQuestionId"),
-    // getQuestions: () => get().questions,
     getSelectedQuestion: () => {
       const { questions, selectedQuestionId } = get();
       return questions?.find((q) => q._id === selectedQuestionId) || null;
     },
+    resetSelectedQuestion: () =>
+      set({ selectedQuestionId: undefined }, false, "resetSelectedQuestion"),
+    resetStore: () => set(initialState, false, "resetStore"),
   }))
 );
 
