@@ -4,6 +4,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useQuestionStore from "@/store/questionsStore";
 import { formatString } from "@/lib/utils";
+import { Flag, Shuffle } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const QuestionDisplay: React.FC = () => {
   const selectedQuestion = useQuestionStore((state) =>
@@ -14,65 +20,68 @@ const QuestionDisplay: React.FC = () => {
 
   return (
     <div className="">
-      <div className="flex justify-between items-center mb-2">
-        <h2 className="text-3xl font-bold">{selectedQuestion.title}</h2>
+      <div className="mb-2 flex justify-between items-baseline">
+        <h2 className="text-3xl font-bold ">{selectedQuestion.title}</h2>
+        <Tooltip>
+          <TooltipTrigger>
+            <Shuffle size={16} className="text-neutral-400" />
+          </TooltipTrigger>
+          <TooltipContent>Feature is under development</TooltipContent>
+        </Tooltip>
+      </div>
+
+      <div className=" mb-8 flex justify-between items-center">
+        <div className="space-x-2">
+          {selectedQuestion.tags.map((tag) => (
+            <Badge key={tag} variant="secondary" className="capitalize">
+              {formatString(tag)}
+            </Badge>
+          ))}
+        </div>
         <Badge variant={selectedQuestion.difficulty} className="capitalize">
           {selectedQuestion.difficulty}
         </Badge>
       </div>
 
-      <div className="space-x-2 mb-8">
-        {selectedQuestion.tags.map((tag) => (
-          <Badge key={tag} variant="secondary" className="capitalize">
-            {formatString(tag)}
-          </Badge>
-        ))}
-      </div>
-
       <div className="space-y-2 mb-4">
         <p>{selectedQuestion.problemStatement}</p>
       </div>
 
-      <div className="space-y-2 mb-4">
-        <h2 className="font-bold text-lg">Examples</h2>
-        <p>{selectedQuestion.problemStatement}</p>
-      </div>
-
-      <Card className="border-0">
-        <CardHeader>
-          <CardTitle>Examples</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {selectedQuestion.examples.map((example, index) => (
-            <div key={index} className="mb-4">
+      {selectedQuestion.examples.map((example, index) => (
+        <div className="mb-4 space-y-1" key={index}>
+          <h2 className="font-bold text-lg">Example {index + 1}</h2>
+          <div className="mb-2 grid grid-cols-3 bg-neutral-500/10 rounded-md p-3 px-4">
+            <div className="space-y-2">
+              <p className="font-semibold">Input:</p>
+              <p className="font-semibold">Output:</p>
+              <p className="font-semibold">Explanation:</p>
+            </div>
+            <div className="space-y-2 col-span-2 ">
               <p>
-                <strong>Input:</strong> {example.input}
+                <code className="text-sm">{example.input}</code>
               </p>
               <p>
-                <strong>Output:</strong> {example.output}
+                <code className="text-sm">{example.output}</code>
               </p>
               <p>
-                <strong>Explanation:</strong> {example.explanation}
+                <code className="text-sm">{example.explanation}</code>
               </p>
             </div>
-          ))}
-        </CardContent>
-      </Card>
+          </div>
+        </div>
+      ))}
 
       {selectedQuestion.constraints &&
         selectedQuestion.constraints.length > 0 && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Constraints</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="list-disc pl-5">
-                {selectedQuestion.constraints.map((constraint, index) => (
-                  <li key={index}>{constraint}</li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
+          <div>
+            <h2 className="font-bold text-lg">Constraints</h2>
+
+            <ul className="list-disc pl-5">
+              {selectedQuestion.constraints.map((constraint, index) => (
+                <li key={index}>{constraint}</li>
+              ))}
+            </ul>
+          </div>
         )}
 
       {/* <Card>
