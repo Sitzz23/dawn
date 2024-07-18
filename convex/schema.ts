@@ -16,7 +16,7 @@ export default defineSchema({
     name: v.string(),
     // roomId: v.string(),
     visibility: v.union(v.literal("public"), v.literal("private")),
-    hostId: v.string(),
+    hostId: v.id("user"),
     playerIds: v.array(v.id("user")),
     startedAt: v.optional(v.number()),
     completedAt: v.optional(v.number()),

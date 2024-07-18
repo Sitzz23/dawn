@@ -8,8 +8,8 @@ type Room = {
   _creationTime: number;
   name: string;
   visibility: "public" | "private";
-  hostId: string;
-  playerIds: string[];
+  hostId: Id<"user">;
+  playerIds: Id<"user">[];
   startedAt?: number;
   completedAt?: number;
   status: "waiting" | "in_progress" | "completed";
