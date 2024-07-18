@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ReportIcon } from "./reportIcon";
-import { SignedIn } from "@clerk/nextjs";
+import { SignedIn, useAuth, useUser } from "@clerk/nextjs";
+import { sendEmail } from "@/lib/sendEmail";
 
 const FloatingReportButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -16,8 +17,9 @@ const FloatingReportButton = () => {
   const [messageError, setMessageError] = useState("");
   const formRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
+  const { user } = useUser();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let valid = true;
     if (!title) {
@@ -35,10 +37,24 @@ const FloatingReportButton = () => {
     }
 
     if (valid) {
-      console.log("Submitted:", { title, message });
-      setIsDropdownOpen(false);
-      setTitle("");
-      setMessage("");
+      const formData = {
+        title,
+        message,
+        senderName: user?.fullName || "",
+        senderEmail: user?.emailAddresses?.[0]?.emailAddress || "",
+      };
+      try {
+        await sendEmail(formData);
+        console.log("Email sent successfully:", formData);
+        setIsDropdownOpen(false);
+        setTitle("");
+        setMessage("");
+        setTimeout(() => {
+          setIsExpanded(false);
+        }, 1500);
+      } catch (error) {
+        console.error("Failed to send email:", error);
+      }
     }
   };
 
@@ -79,12 +95,7 @@ const FloatingReportButton = () => {
           onHoverEnd={() => !isDropdownOpen && setIsExpanded(false)}
           onClick={handleButtonClick}
         >
-          <motion.div
-            className="flex items-center justify-center w-12 h-12"
-            initial={{ scale: 1 }}
-            whileHover={{ scale: 1.1 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
+          <motion.div className="flex items-center justify-center w-12 h-12">
             <ReportIcon className="h-5 scale-x-[-1]" />
           </motion.div>
           <AnimatePresence>
