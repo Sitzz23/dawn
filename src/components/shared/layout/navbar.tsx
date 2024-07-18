@@ -34,8 +34,8 @@ const Navbar = () => {
           <UserButton />
         </SignedIn>
         <SignedOut>
-          <Button className="font-urban font-bold" asChild>
-            <SignInButton mode="modal">Sign In</SignInButton>
+          <Button className="font-urban font-bold" asChild variant={"outline"}>
+            <Link href={"/sign-in"}>Sign In</Link>
           </Button>
         </SignedOut>
       </div>
