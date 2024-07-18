@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useQuestionStore from "@/store/questionsStore";
+import { formatString } from "@/lib/utils";
 
 const QuestionDisplay: React.FC = () => {
   const selectedQuestion = useQuestionStore((state) =>
@@ -12,32 +13,32 @@ const QuestionDisplay: React.FC = () => {
   if (!selectedQuestion) return <div>No question selected</div>;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold mb-2">{selectedQuestion.title}</h2>
-        <Badge variant={selectedQuestion.difficulty}>
+    <div className="">
+      <div className="flex justify-between items-center mb-2">
+        <h2 className="text-3xl font-bold">{selectedQuestion.title}</h2>
+        <Badge variant={selectedQuestion.difficulty} className="capitalize">
           {selectedQuestion.difficulty}
         </Badge>
       </div>
 
-      <div className="space-x-2">
+      <div className="space-x-2 mb-8">
         {selectedQuestion.tags.map((tag) => (
-          <Badge key={tag} variant="secondary">
-            {tag}
+          <Badge key={tag} variant="secondary" className="capitalize">
+            {formatString(tag)}
           </Badge>
         ))}
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Problem Statement</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>{selectedQuestion.problemStatement}</p>
-        </CardContent>
-      </Card>
+      <div className="space-y-2 mb-4">
+        <p>{selectedQuestion.problemStatement}</p>
+      </div>
 
-      <Card>
+      <div className="space-y-2 mb-4">
+        <h2 className="font-bold text-lg">Examples</h2>
+        <p>{selectedQuestion.problemStatement}</p>
+      </div>
+
+      <Card className="border-0">
         <CardHeader>
           <CardTitle>Examples</CardTitle>
         </CardHeader>
@@ -74,7 +75,7 @@ const QuestionDisplay: React.FC = () => {
           </Card>
         )}
 
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle>Test Cases</CardTitle>
         </CardHeader>
@@ -99,7 +100,7 @@ const QuestionDisplay: React.FC = () => {
             ))}
           </Tabs>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 };
