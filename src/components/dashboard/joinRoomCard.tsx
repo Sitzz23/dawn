@@ -21,6 +21,7 @@ import useApiMutation from "@/hooks/useApiMutation";
 import useUserStore from "@/store/userStore";
 import { useMutation } from "convex/react";
 import { Id } from "../../../convex/_generated/dataModel";
+import useQuestionStore from "@/store/questionsStore";
 
 const JoinRoomCard = () => {
   const router = useRouter();
@@ -28,6 +29,7 @@ const JoinRoomCard = () => {
   const [battleCodeError, setBattleCodeError] = useState(false);
   const { mutate, pending } = useApiMutation(api.room.addPlayerToRoom);
   const { currentUserId } = useUserStore();
+  const { resetStore } = useQuestionStore();
 
   const validateBattleCode = (code: string): boolean => {
     if (!code.trim()) {
@@ -69,6 +71,7 @@ const JoinRoomCard = () => {
           })
             .then(() => {
               router.push(`/room/${battleCode}`);
+              resetStore();
             })
             .catch(() => toast.error("Failed to join room"));
           break;
