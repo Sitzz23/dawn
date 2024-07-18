@@ -1,11 +1,19 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { Bot, Code2, LifeBuoy, SquareTerminal, SquareUser } from "lucide-react";
+import {
+  Bot,
+  Code2,
+  Crown,
+  LifeBuoy,
+  SquareTerminal,
+  SquareUser,
+} from "lucide-react";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import useRoomStore from "@/store/roomStore";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { IconPhCrownSimpleFill } from "../shared/crownIcon";
 
 const WorkspaceSidebar = () => {
   const { room } = useRoomStore();
@@ -101,7 +109,13 @@ const WorkspaceSidebar = () => {
       <nav className="flex flex-col items-center gap-4 py-4 mx-2">
         {playersDetails?.map((player, index) => (
           <Tooltip key={index}>
-            <TooltipTrigger asChild>
+            <TooltipTrigger className="relative">
+              {player._id === room?.hostId && (
+                <IconPhCrownSimpleFill
+                  height={15}
+                  className="top-[0px] left-[0px] rotate-[-20deg] "
+                />
+              )}
               <Avatar className="h-8 w-8">
                 <AvatarImage src={player.pictureUrl} alt={player.name} />
                 <AvatarFallback>{player.name.charAt(0)}</AvatarFallback>
