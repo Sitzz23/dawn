@@ -47,10 +47,18 @@ const Lobby = ({ params: { roomId } }: { params: { roomId: Id<"room"> } }) => {
   const mutate = useMutation(api.room.removePlayerFromRoom);
   const setRoom = useRoomStore((state) => state.setRoom);
   const { currentUserId } = useUserStore();
+  const getRoomStatus = useQuery(api.room.getRoomStatus, { roomId });
+
+  useEffect(() => {
+    if (getRoomStatus === "in_progress") {
+      router.replace(`/room/${roomId}/workspace`);
+    }
+  }, [getRoomStatus, roomId, router]);
 
   useEffect(() => {
     lobbyData && setRoom(lobbyData);
-  }, [lobbyData, setRoom]);
+    console.log("rr", currentUserId, lobbyData?.hostId);
+  }, [currentUserId, lobbyData, setRoom]);
 
   const playersDetails = useQuery(api.user.getPlayersDetails, {
     playersIds: lobbyData?.playerIds || [],
@@ -137,11 +145,11 @@ const Lobby = ({ params: { roomId } }: { params: { roomId: Id<"room"> } }) => {
         </CardHeader>
         {playersDetails && playersDetails.length > 0 && lobbyData ? (
           <CardContent className="grid grid-cols-2 gap-6">
-            {playersDetails.map((player) => (
+            {playersDetails.map((player, index) => (
               <PlayerCard
-                key={player.tokenIdentifier}
+                key={index}
                 player={player}
-                isHost={player.tokenIdentifier === lobbyData?.hostId}
+                isHost={player._id === lobbyData?.hostId}
                 user={user}
               />
             ))}
@@ -196,7 +204,7 @@ const Lobby = ({ params: { roomId } }: { params: { roomId: Id<"room"> } }) => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          {user?.id === lobbyData?.hostId ? (
+          {currentUserId === lobbyData?.hostId ? (
             <Button
               className="font-urban font-bold"
               onClick={() => startRoom()}
