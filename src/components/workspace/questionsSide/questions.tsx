@@ -15,7 +15,9 @@ const QuestionDisplay: React.FC = () => {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold mb-2">{selectedQuestion.title}</h2>
-        <Badge variant="outline">{selectedQuestion.difficulty}</Badge>
+        <Badge variant={selectedQuestion.difficulty}>
+          {selectedQuestion.difficulty}
+        </Badge>
       </div>
 
       <div className="space-x-2">

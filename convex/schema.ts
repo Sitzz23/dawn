@@ -41,7 +41,11 @@ export default defineSchema({
       })
     ),
     constraints: v.optional(v.array(v.string())),
-    difficulty: v.string(),
+    difficulty: v.union(
+      v.literal("easy"),
+      v.literal("medium"),
+      v.literal("hard")
+    ),
     examples: v.array(
       v.object({
         input: v.string(),
