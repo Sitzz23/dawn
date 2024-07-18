@@ -23,14 +23,20 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
   }, [lobbyData, setRoom]);
 
   return (
-    <div className="h-screen w-full pl-[56px] flex">
+    <div className="h-screen w-full pl-[56px] flex overflow-hidden">
       <WorkspaceSidebar />
       <div className="flex-1 flex flex-col w-full h-full">
         <WorkspaceHeader questionIds={lobbyData?.questions} />
-        <main className="flex-1">
-          <ResizablePanelGroup direction="horizontal" className="h-screen">
-            <ResizablePanel defaultSize={38} minSize={30} className="p-4">
-              <QuestionSide />
+        <main className="flex-1 overflow-hidden">
+          <ResizablePanelGroup direction="horizontal" className="h-full">
+            <ResizablePanel
+              defaultSize={38}
+              minSize={30}
+              className="overflow-hidden"
+            >
+              <div className="h-full overflow-y-auto">
+                <QuestionSide />
+              </div>
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={62} className="p-4" minSize={55}>

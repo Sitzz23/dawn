@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 // import { SocketProvider } from "@/lib/socketProvider";
 import { ConvexClientProvider } from "@/lib/clerkProvider";
+import FloatingReportButton from "@/components/shared/reportButton";
 
 export const metadata: Metadata = {
   title: "Dawn",
@@ -38,6 +39,7 @@ export default function RootLayout({
             {/* <SocketProvider> */}
             {children}
             <Toaster />
+            <FloatingReportButton />
             {/* </SocketProvider> */}
           </ConvexClientProvider>
         </ThemeProvider>
