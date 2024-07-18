@@ -21,7 +21,7 @@ const QuestionDisplay: React.FC = () => {
   return (
     <div className="">
       <div className="mb-2 flex justify-between items-baseline">
-        <h2 className="text-3xl font-bold ">{selectedQuestion.title}</h2>
+        <h2 className="text-3xl font-bold pr-2">{selectedQuestion.title}</h2>
         <Tooltip>
           <TooltipTrigger>
             <Shuffle size={16} className="text-neutral-400" />
@@ -31,8 +31,8 @@ const QuestionDisplay: React.FC = () => {
       </div>
 
       <div className=" mb-8 flex justify-between items-center">
-        <div className="space-x-2">
-          {selectedQuestion.tags.map((tag) => (
+        <div className="flex gap-2">
+          {selectedQuestion.tags.slice(0, 3).map((tag) => (
             <Badge key={tag} variant="secondary" className="capitalize">
               {formatString(tag)}
             </Badge>
@@ -51,12 +51,12 @@ const QuestionDisplay: React.FC = () => {
         <div className="mb-4 space-y-1" key={index}>
           <h2 className="font-bold text-lg">Example {index + 1}</h2>
           <div className="mb-2 grid grid-cols-3 bg-neutral-500/10 rounded-md p-3 px-4">
-            <div className="space-y-2">
+            <div className="space-y-1">
               <p className="font-semibold">Input:</p>
               <p className="font-semibold">Output:</p>
               <p className="font-semibold">Explanation:</p>
             </div>
-            <div className="space-y-2 col-span-2 ">
+            <div className="space-y-1 col-span-2 ">
               <p>
                 <code className="text-sm">{example.input}</code>
               </p>
