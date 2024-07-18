@@ -29,11 +29,11 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
         <WorkspaceHeader questionIds={lobbyData?.questions} />
         <main className="flex-1">
           <ResizablePanelGroup direction="horizontal" className="h-screen">
-            <ResizablePanel defaultSize={35} minSize={20} className="p-4">
+            <ResizablePanel defaultSize={38} minSize={30} className="p-4">
               <QuestionSide />
             </ResizablePanel>
             <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={65} className="p-4" minSize={50}>
+            <ResizablePanel defaultSize={62} className="p-4" minSize={55}>
               <EditorSide />
             </ResizablePanel>
           </ResizablePanelGroup>

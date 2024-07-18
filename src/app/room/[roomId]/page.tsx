@@ -34,16 +34,15 @@ import {
 } from "@/components/ui/tooltip";
 import { PlayerCard } from "@/components/room/lobby/playerCard";
 import { convex } from "@/lib/convexHttpClient";
-import useApiMutation from "@/hooks/useApiMutation";
 import useRoomStore from "@/store/roomStore";
-import useQuestionStore, { Question } from "@/store/questionsStore";
+import { Question } from "@/store/questionsStore";
 import { Id } from "../../../../convex/_generated/dataModel";
 import useUserStore from "@/store/userStore";
 
 const Lobby = ({ params: { roomId } }: { params: { roomId: Id<"room"> } }) => {
   const router = useRouter();
   const { user } = useUser();
-  const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
+  const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId });
   const mutate = useMutation(api.room.removePlayerFromRoom);
   const setRoom = useRoomStore((state) => state.setRoom);
   const { currentUserId } = useUserStore();

@@ -20,8 +20,10 @@ const QuestionDisplay: React.FC = () => {
 
   return (
     <div className="">
-      <div className="mb-2 flex justify-between items-baseline">
-        <h2 className="text-3xl font-bold pr-2">{selectedQuestion.title}</h2>
+      <div className="mb-3 flex justify-between items-center">
+        <h2 className="text-2xl font-bold pr-2 text-pretty">
+          {selectedQuestion.title}
+        </h2>
         <Tooltip>
           <TooltipTrigger>
             <Shuffle size={16} className="text-neutral-400" />
@@ -30,7 +32,7 @@ const QuestionDisplay: React.FC = () => {
         </Tooltip>
       </div>
 
-      <div className=" mb-8 flex justify-between items-center">
+      <div className="mb-12 flex justify-between items-center">
         <div className="flex gap-2">
           {selectedQuestion.tags.slice(0, 3).map((tag) => (
             <Badge key={tag} variant="secondary" className="capitalize">
@@ -43,12 +45,26 @@ const QuestionDisplay: React.FC = () => {
         </Badge>
       </div>
 
-      <div className="space-y-2 mb-4">
+      <div className=" mb-6">
+        <h2 className="font-bold text-lg">Problem Statement</h2>
         <p>{selectedQuestion.problemStatement}</p>
       </div>
 
+      {selectedQuestion.constraints &&
+        selectedQuestion.constraints.length > 0 && (
+          <div className="mb-6">
+            <h2 className="font-bold text-lg">Constraints</h2>
+
+            <ul className="list-disc pl-5">
+              {selectedQuestion.constraints.map((constraint, index) => (
+                <li key={index}>{constraint}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
       {selectedQuestion.examples.map((example, index) => (
-        <div className="mb-4 space-y-1" key={index}>
+        <div className="mb-6 space-y-1" key={index}>
           <h2 className="font-bold text-lg">Example {index + 1}</h2>
           <div className="mb-2 grid grid-cols-3 bg-neutral-500/10 rounded-md p-3 px-4">
             <div className="space-y-1">
@@ -71,45 +87,27 @@ const QuestionDisplay: React.FC = () => {
         </div>
       ))}
 
-      {selectedQuestion.constraints &&
-        selectedQuestion.constraints.length > 0 && (
-          <div>
-            <h2 className="font-bold text-lg">Constraints</h2>
-
-            <ul className="list-disc pl-5">
-              {selectedQuestion.constraints.map((constraint, index) => (
-                <li key={index}>{constraint}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-      {/* <Card>
-        <CardHeader>
-          <CardTitle>Test Cases</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="1">
-            <TabsList>
-              {selectedQuestion.testCases.map((_, index) => (
-                <TabsTrigger key={index} value={`${index + 1}`}>
-                  Test Case {index + 1}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            {selectedQuestion.testCases.map((testCase, index) => (
-              <TabsContent key={index} value={`${index + 1}`}>
-                <p>
-                  <strong>Input:</strong> {testCase.input}
-                </p>
-                <p>
-                  <strong>Output:</strong> {testCase.output}
-                </p>
-              </TabsContent>
+      {/* <div className="mb-6">
+        <Tabs defaultValue="1">
+          <TabsList>
+            {selectedQuestion.testCases.map((_, index) => (
+              <TabsTrigger key={index} value={`${index + 1}`}>
+                Test Case {index + 1}
+              </TabsTrigger>
             ))}
-          </Tabs>
-        </CardContent>
-      </Card> */}
+          </TabsList>
+          {selectedQuestion.testCases.map((testCase, index) => (
+            <TabsContent key={index} value={`${index + 1}`}>
+              <p>
+                <strong>Input:</strong> {testCase.input}
+              </p>
+              <p>
+                <strong>Output:</strong> {testCase.output}
+              </p>
+            </TabsContent>
+          ))}
+        </Tabs>
+      </div> */}
     </div>
   );
 };
