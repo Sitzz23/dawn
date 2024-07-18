@@ -23,6 +23,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "convex": "^1.12.2",
+    "emailjs-com": "^3.2.0",
     "framer-motion": "^11.3.7",
     "lucide-react": "^0.395.0",
     "nanoid": "^5.0.7",
