@@ -10,19 +10,20 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Empty from "@/components/empty/empty";
 
 const QuestionDisplay: React.FC = () => {
   const selectedQuestion = useQuestionStore((state) =>
     state.getSelectedQuestion()
   );
 
-  if (!selectedQuestion) return <div>No question selected</div>;
+  if (!selectedQuestion) return <Empty />;
 
   return (
     <div className="px-6 py-4 h-full flex flex-col">
       <div className="sticky top-0 bg-background z-10 pb-4">
         <div className="mb-3 flex justify-between items-center">
-          <h2 className="text-2xl font-bold pr-2 text-pretty">
+          <h2 className="text-2xl font-bold text-pretty">
             {selectedQuestion.title}
           </h2>
           <Tooltip>
