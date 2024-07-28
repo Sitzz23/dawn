@@ -20,7 +20,7 @@ const QuestionDisplay: React.FC = () => {
   if (!selectedQuestion) return <Empty />;
 
   return (
-    <div className="px-6 py-4 h-full flex flex-col">
+    <div className="px-6 py-6 flex flex-col">
       <div className="sticky top-0 bg-background z-10 pb-4">
         <div className="mb-3 flex justify-between items-center">
           <h2 className="text-2xl font-bold text-pretty">
@@ -68,7 +68,7 @@ const QuestionDisplay: React.FC = () => {
             )}
 
           {selectedQuestion.examples.slice(0, 1).map((example, index) => (
-            <div className="mb-6 space-y-1" key={index}>
+            <div className="space-y-1" key={index}>
               <h2 className="font-bold text-lg">Example {index + 1}</h2>
               <div className="mb-2 grid grid-cols-6 bg-neutral-500/10 rounded-md p-2 px-3">
                 <div className="space-y-1 col-span-2">

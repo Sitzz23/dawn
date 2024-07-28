@@ -3,7 +3,7 @@ import { Skeleton } from "../ui/skeleton";
 
 const Empty = () => {
   return (
-    <div className="px-6 py-5">
+    <div className="p-6">
       <Skeleton className="h-6 w-[250px] mb-4" />
       <div className="flex justify-between mb-9">
         <div className="flex gap-2">
@@ -29,7 +29,7 @@ const Empty = () => {
       </div>
 
       <Skeleton className="h-5 w-[120px] mb-3" />
-      <div className="space-y-2.5 mb-6">
+      <div className="space-y-2.5">
         <Skeleton className="h-36 w-full " />
       </div>
     </div>
