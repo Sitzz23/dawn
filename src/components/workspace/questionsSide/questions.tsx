@@ -10,7 +10,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import Empty from "@/components/empty/empty";
+import Empty from "@/components/empty/emptyQuestions";
 
 const QuestionDisplay: React.FC = () => {
   const selectedQuestion = useQuestionStore((state) =>

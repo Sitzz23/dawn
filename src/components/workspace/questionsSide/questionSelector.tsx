@@ -9,6 +9,9 @@ import {
 
 import { Id } from "../../../../convex/_generated/dataModel";
 import useQuestionStore from "@/store/questionsStore";
+import EmptySelector from "@/components/empty/emptySelector";
+import { SelectIcon } from "@radix-ui/react-select";
+import { Icon } from "lucide-react";
 
 const QuestionSelector: React.FC = () => {
   const { questions, selectedQuestionId, setSelectedQuestionId } =
@@ -21,7 +24,7 @@ const QuestionSelector: React.FC = () => {
   }, [questions, selectedQuestionId, setSelectedQuestionId]);
 
   if (!questions) {
-    return <div>Loading questions...</div>;
+    return <EmptySelector />;
   }
 
   return (
@@ -34,9 +37,11 @@ const QuestionSelector: React.FC = () => {
       </SelectTrigger>
       <SelectContent>
         {questions.map((q) => (
-          <SelectItem key={q._id} value={q._id}>
-            {q.title}
-          </SelectItem>
+          <>
+            <SelectItem key={q._id} value={q._id}>
+              {q.title}
+            </SelectItem>
+          </>
         ))}
       </SelectContent>
     </Select>
