@@ -6,7 +6,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       {/* <SocketProvider> */}
-      <TooltipProvider>{children}</TooltipProvider>
+      <TooltipProvider delayDuration={0}>{children}</TooltipProvider>
       {/* </SocketProvider> */}
     </>
   );
