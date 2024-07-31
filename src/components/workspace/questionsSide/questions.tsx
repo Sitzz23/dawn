@@ -1,7 +1,5 @@
 import type React from "react";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useQuestionStore from "@/store/questionsStore";
 import { formatString } from "@/lib/utils";
 import { Shuffle } from "lucide-react";
@@ -20,8 +18,8 @@ const QuestionDisplay: React.FC = () => {
   if (!selectedQuestion) return <Empty />;
 
   return (
-    <div className="px-6 py-6 flex flex-col">
-      <div className="sticky top-0 bg-background z-10 pb-4">
+    <div className="p-6 flex flex-col h-full overflow-y-scroll">
+      <div className="pb-4">
         <div className="mb-3 flex justify-between items-center">
           <h2 className="text-2xl font-bold text-pretty">
             {selectedQuestion.title}
@@ -48,7 +46,7 @@ const QuestionDisplay: React.FC = () => {
         </div>
       </div>
 
-      <div className="overflow-y-auto flex-1">
+      <div className=" flex-1">
         <div className="pt-4">
           <div className="mb-6">
             <h2 className="font-bold text-lg">Problem Statement</h2>

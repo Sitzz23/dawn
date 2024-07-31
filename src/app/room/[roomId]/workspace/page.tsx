@@ -32,9 +32,13 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
           <ResizablePanelGroup direction="horizontal" className="h-full">
             <ResizablePanel defaultSize={38} minSize={30}>
               <ResizablePanelGroup direction={"vertical"}>
-                <QuestionDisplay />
+                <ResizablePanel defaultSize={75} minSize={40}>
+                  <QuestionDisplay />
+                </ResizablePanel>
                 <ResizableHandle withHandle />
-                <TestCase />
+                <ResizablePanel defaultSize={25} minSize={20}>
+                  <TestCase />
+                </ResizablePanel>
               </ResizablePanelGroup>
             </ResizablePanel>
             <ResizableHandle withHandle />

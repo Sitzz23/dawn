@@ -1,5 +1,5 @@
 import EmptyTestCases from "@/components/empty/emptyTestCases";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useQuestionStore from "@/store/questionsStore";
 import React from "react";
 
@@ -13,19 +13,33 @@ const TestCase = () => {
   if (!selectedQuestion) return <EmptyTestCases />;
 
   return (
-    <div className="p-6">
-      <Tabs
-        defaultValue="Test case 1"
-        className="w-fit flex justify-start items-center gap-4"
-      >
-        {/* <h1 className="whitespace-nowrap  rounded-sm font-bold">Test Cases</h1> */}
-        <TabsList className={`grid w-full grid-cols-${gridCols}`}>
-          {selectedQuestion.testCases.map((item, index) => (
-            <TabsTrigger key={index} value={`Test case ${index + 1}`}>
-              {`Test case ${index + 1}`}
+    <div className="p-6 h-full overflow-y-auto">
+      <Tabs defaultValue="0" className="w-full">
+        <TabsList className={`flex gap-2 justify-start`}>
+          {selectedQuestion.testCases.map((_, index) => (
+            <TabsTrigger
+              key={index}
+              value={index.toString()}
+              className="px-4 py-2"
+            >
+              Test case {index + 1}
             </TabsTrigger>
           ))}
         </TabsList>
+        {selectedQuestion.testCases.map((testCase, index) => (
+          <TabsContent key={index} value={index.toString()} className="mt-4">
+            <div className="space-y-4">
+              <div className="flex  justify-start gap-4">
+                <h3 className="text-lg font-semibold mb-2">Input:</h3>
+                <pre className="text-sm pt-[5px]">{testCase.input}</pre>
+              </div>
+              <div className="flex  justify-start gap-4">
+                <h3 className="text-lg font-semibold mb-2">Output:</h3>
+                <pre className="text-sm pt-[5px]">{testCase.output}</pre>
+              </div>
+            </div>
+          </TabsContent>
+        ))}
       </Tabs>
     </div>
   );
