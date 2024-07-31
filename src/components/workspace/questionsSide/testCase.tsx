@@ -29,13 +29,13 @@ const TestCase = () => {
         {selectedQuestion.testCases.map((testCase, index) => (
           <TabsContent key={index} value={index.toString()} className="mt-4">
             <div className="space-y-4">
-              <div className="flex  justify-start gap-4">
-                <h3 className="text-lg font-semibold mb-2">Input:</h3>
-                <pre className="text-sm pt-[5px]">{testCase.input}</pre>
+              <div className="flex  justify-start items-center gap-4">
+                <h3 className="font-semibold mb-2">Input:</h3>
+                <pre className="text-sm pb-1.5">{testCase.input}</pre>
               </div>
-              <div className="flex  justify-start gap-4">
-                <h3 className="text-lg font-semibold mb-2">Output:</h3>
-                <pre className="text-sm pt-[5px]">{testCase.output}</pre>
+              <div className="flex  justify-start items-center gap-4">
+                <h3 className="font-semibold mb-2">Output:</h3>
+                <pre className="text-sm pb-1.5">{testCase.output}</pre>
               </div>
             </div>
           </TabsContent>
