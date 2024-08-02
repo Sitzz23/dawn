@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { ConvexClientProvider } from "@/lib/clerkProvider";
 import FloatingReportButton from "@/components/shared/reportButton";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "Dawn",
@@ -42,6 +43,7 @@ export default function RootLayout({
             <Toaster />
             <FloatingReportButton />
             {/* </SocketProvider> */}
+            <SpeedInsights />
             <Analytics />
           </ConvexClientProvider>
         </ThemeProvider>
