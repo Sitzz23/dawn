@@ -87,7 +87,7 @@ const FloatingReportButton = () => {
       <div className="fixed bottom-4 right-4 z-50">
         <motion.div
           ref={buttonRef}
-          className="flex items-center bg-secondary rounded-full cursor-pointer overflow-hidden"
+          className="flex items-center border  rounded-full cursor-pointer overflow-hidden"
           initial={{ width: "3rem" }}
           animate={{ width: isExpanded ? "auto" : "3rem" }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -95,8 +95,8 @@ const FloatingReportButton = () => {
           onHoverEnd={() => !isDropdownOpen && setIsExpanded(false)}
           onClick={handleButtonClick}
         >
-          <motion.div className="flex items-center justify-center w-12 h-12">
-            <ReportIcon className="h-5 scale-x-[-1]" />
+          <motion.div className="flex items-center justify-center w-12 h-[46px]">
+            <ReportIcon className="h-[18px] scale-x-[-1]" />
           </motion.div>
           <AnimatePresence>
             {isExpanded && (

@@ -8,8 +8,6 @@ const TestCase = () => {
     state.getSelectedQuestion()
   );
 
-  const gridCols = selectedQuestion?.testCases.length;
-
   if (!selectedQuestion) return <EmptyTestCases />;
 
   return (
