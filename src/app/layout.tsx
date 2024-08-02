@@ -44,7 +44,7 @@ export default function RootLayout({
             <FloatingReportButton />
             {/* </SocketProvider> */}
             <SpeedInsights />
-            <Analytics />
+            <Analytics mode={"production"} />
           </ConvexClientProvider>
         </ThemeProvider>
       </body>
