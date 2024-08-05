@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
 import { devtools } from "zustand/middleware";
 import { Id } from "../../convex/_generated/dataModel";
+import { codeLangs, langMap, langTemp } from "@/lib/utils";
 
 export type Question = {
   _id: Id<"questions">;
@@ -13,8 +13,6 @@ export type Question = {
   constraints?: string[];
   difficulty: "easy" | "medium" | "hard";
   examples: Array<{ input: string; output: string; explanation: string }>;
-  //   submissions?: Id<"submission">[];
-  //   viewers?: Id<"user">[];
 };
 
 type QuestionStore = {
@@ -25,11 +23,24 @@ type QuestionStore = {
   getSelectedQuestion: () => Question | null;
   resetSelectedQuestion: () => void;
   resetStore: () => void;
+  codeLang: { id: number; name: string };
+  codeTemp: string;
+  setCodeLang: (id: number) => void;
 };
 
 const initialState = {
   questions: null,
   selectedQuestionId: undefined,
+  codeLang: codeLangs.find((lang) => lang.id === 71) || {
+    id: 71,
+    name: "defaultLang",
+  },
+  codeTemp:
+    langTemp[
+      langMap[
+        codeLangs.find((lang) => lang.id === 71)?.name as keyof typeof langMap
+      ]
+    ] || "",
 };
 
 const useQuestionStore = create<QuestionStore>()(
@@ -46,6 +57,21 @@ const useQuestionStore = create<QuestionStore>()(
     resetSelectedQuestion: () =>
       set({ selectedQuestionId: undefined }, false, "resetSelectedQuestion"),
     resetStore: () => set(initialState, false, "resetStore"),
+    setCodeLang: (id: number) => {
+      const selectedLang = codeLangs.find((lang) => lang.id === id);
+      if (selectedLang) {
+        const langName = selectedLang.name as keyof typeof langMap;
+
+        set(
+          {
+            codeLang: selectedLang,
+            codeTemp: langTemp[langMap[langName]],
+          },
+          false,
+          "setCodeLang"
+        );
+      }
+    },
   }))
 );
 
