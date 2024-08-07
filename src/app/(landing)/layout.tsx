@@ -5,12 +5,12 @@ import React from "react";
 const LandingLayout = (props: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen rounded-[0.5rem] relative overflow-y-clip">
-      <LandingDesign />
+      {/* <LandingDesign /> */}
 
-      {/* <Navbar /> */}
-      {/* <main className="min-h-[calc(100vh-14rem)] flex-1 space-y-4">
+      <Navbar />
+      <main className="min-h-[calc(100vh-14rem)] flex-1 space-y-4">
         {props.children}
-      </main> */}
+      </main>
     </div>
   );
 };
