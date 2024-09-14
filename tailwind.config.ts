@@ -63,7 +63,6 @@ const config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
         heading: ["var(--font-heading)", ...fontFamily.sans],
         figtree: ["var(--font-figtree)", ...fontFamily.sans],
         urban: ["var(--font-urban)", ...fontFamily.sans],

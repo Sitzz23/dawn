@@ -2,20 +2,19 @@
 
 import Balancer from "react-wrap-balancer";
 import Link from "next/link";
+import GradientText from "@/components/shared/layout/gradientText";
 
 export default function Home() {
   return (
     <>
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
         <div className="container flex max-w-[64rem] flex-col items-center gap-5 text-center">
-          <h1 className=" text-4xl font-heading font-extrabold tracking-tight  sm:text-5xl md:text-6xl lg:text-7xl">
-            <Balancer>
-              Coding contests are competitive now, its{" "}
-              <span className="relative bg-gradient-to-r from-indigo-500 to-purple-500/80 bg-clip-text font-extrabold text-transparent">
-                Dawn
-              </span>
-            </Balancer>
-          </h1>
+          <GradientText
+            className="text-[35px] md:text-[40px] lg:text-[55px] xl:text-[70px] 2xl:text-[80px] leading-tight font-semibold text-pretty"
+            element="H1"
+          >
+            Making coding actually Competitive
+          </GradientText>
           <p className="max-w-[45rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8 font-figtree">
             <Balancer>
               Enter the exhilarating world where coding meets competition in

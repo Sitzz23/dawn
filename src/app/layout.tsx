@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/shared/themeProvider";
-import { fontSans, fontUrban, fontFigtree, fontHeading } from "@/assets/fonts";
+import { fontUrban, fontFigtree, fontHeading } from "@/assets/fonts";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 // import { SocketProvider } from "@/lib/socketProvider";
@@ -25,7 +25,6 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background antialiased font-figtree",
-          fontSans.variable,
           fontUrban.variable,
           fontFigtree.variable,
           fontHeading.variable
