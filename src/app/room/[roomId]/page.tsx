@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { useMutation, useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { api } from "../../../../convex/_generated/api";
 import { Badge } from "@/components/ui/badge";
@@ -25,7 +25,15 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronLeft, Clipboard, Eye, EyeOff, Mail } from "lucide-react";
+import {
+  ChevronLeft,
+  Clipboard,
+  Eye,
+  EyeOff,
+  Mail,
+  Scroll,
+  Swords,
+} from "lucide-react";
 import { toast } from "sonner";
 import {
   Tooltip,
@@ -38,6 +46,9 @@ import useRoomStore from "@/store/roomStore";
 import { Question } from "@/store/questionsStore";
 import { Id } from "../../../../convex/_generated/dataModel";
 import useUserStore from "@/store/userStore";
+import GlassCard from "@/components/shared/glassCard";
+import GradientText from "@/components/shared/layout/gradientText";
+import BackdropGradient from "@/components/shared/backdropGradient";
 
 const Lobby = ({ params: { roomId } }: { params: { roomId: Id<"room"> } }) => {
   const router = useRouter();
@@ -126,103 +137,114 @@ const Lobby = ({ params: { roomId } }: { params: { roomId: Id<"room"> } }) => {
           </div>
         )}
       </div>
-
-      <Card className="w-[50%]">
-        <CardHeader>
-          <CardTitle className="flex justify-between items-center">
-            <p className="font-heading">Lobby for {lobbyData?.name}</p>
-            {lobbyData ? (
-              <Badge variant={"secondary"} className="text-xs">
-                {lobbyData.playerIds.length} / {lobbyData.maxPlayers}
-              </Badge>
-            ) : (
-              <Skeleton className="rounded-full w-10 h-5" />
-            )}
-          </CardTitle>
-          <CardDescription>Waiting area for players to join</CardDescription>
-        </CardHeader>
-        {playersDetails && playersDetails.length > 0 && lobbyData ? (
-          <CardContent className="grid grid-cols-2 gap-6">
-            {playersDetails.map((player, index) => (
-              <PlayerCard
-                key={index}
-                player={player}
-                isHost={player._id === lobbyData?.hostId}
-                user={user}
-              />
-            ))}
-          </CardContent>
-        ) : (
-          <CardContent className="grid grid-cols-2 gap-6">
-            <Card className="">
-              <CardContent className="flex items-center p-4">
-                <Skeleton className="h-10 w-10 mr-4 rounded-full" />
-                <div className="flex-grow space-y-2">
-                  <Skeleton className="h-[18px] w-[150px]" />
-                  <Skeleton className="h-[18px] w-[70px]" />
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="flex items-center p-4">
-                <Skeleton className="h-10 w-10 mr-4 rounded-full" />
-                <div className="flex-grow space-y-2">
-                  <Skeleton className="h-[18px] w-[150px]" />
-                  <Skeleton className="h-[18px] w-[70px]" />
-                </div>
-              </CardContent>
-            </Card>
-          </CardContent>
-        )}
-
-        <CardFooter className="flex justify-between">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">Battlepass</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 " align="end">
-              <DropdownMenuLabel>Invite players</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => {
-                  copyRoomId();
-                }}
-              >
-                <Clipboard className="mr-2 h-4 w-4" />
-                <span>Copy room code</span>
-                <DropdownMenuShortcut>⇧⌘C</DropdownMenuShortcut>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  mailRoomId();
-                }}
-              >
-                <Mail className="mr-2 h-4 w-4" />
-                <span>Email</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          {currentUserId === lobbyData?.hostId ? (
-            <Button
-              className="font-urban font-bold"
-              onClick={() => startRoom()}
-            >
-              Start battle
-            </Button>
+      <BackdropGradient
+        className="w-4/12 h-2/6 opacity-40"
+        container="flex flex-col items-center"
+      >
+        <GlassCard className="w-[50%]">
+          <CardHeader>
+            <CardTitle className="flex justify-between items-center">
+              <GradientText className="font-heading pb-1" element="H2">
+                Lobby for {lobbyData?.name}
+              </GradientText>
+              {lobbyData ? (
+                <Badge variant={"secondary"} className="text-xs">
+                  {lobbyData.playerIds.length} / {lobbyData.maxPlayers}
+                </Badge>
+              ) : (
+                <Skeleton className="rounded-full w-10 h-5" />
+              )}
+            </CardTitle>
+            <CardDescription>Waiting area for players to join</CardDescription>
+          </CardHeader>
+          {playersDetails && playersDetails.length > 0 && lobbyData ? (
+            <CardContent className="grid grid-cols-2 gap-6">
+              {playersDetails.map((player, index) => (
+                <PlayerCard
+                  key={index}
+                  player={player}
+                  isHost={player._id === lobbyData?.hostId}
+                  user={user}
+                />
+              ))}
+            </CardContent>
           ) : (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="hover:cursor-not-allowed">
-                  <Button className="font-urban font-bold" disabled>
-                    Start battle
-                  </Button>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>Wait for host to start the battle</TooltipContent>
-            </Tooltip>
+            <CardContent className="grid grid-cols-2 gap-6">
+              <Card className="">
+                <CardContent className="flex items-center p-4">
+                  <Skeleton className="h-10 w-10 mr-4 rounded-full" />
+                  <div className="flex-grow space-y-2">
+                    <Skeleton className="h-[18px] w-[150px]" />
+                    <Skeleton className="h-[18px] w-[70px]" />
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="flex items-center p-4">
+                  <Skeleton className="h-10 w-10 mr-4 rounded-full" />
+                  <div className="flex-grow space-y-2">
+                    <Skeleton className="h-[18px] w-[150px]" />
+                    <Skeleton className="h-[18px] w-[70px]" />
+                  </div>
+                </CardContent>
+              </Card>
+            </CardContent>
           )}
-        </CardFooter>
-      </Card>
+
+          <CardFooter className="flex justify-between">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  <Scroll className="mr-2 h-4 w-4" /> Battlepass
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 " align="end">
+                <DropdownMenuLabel>Invite players</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => {
+                    copyRoomId();
+                  }}
+                >
+                  <Clipboard className="mr-2 h-4 w-4" />
+                  <span>Copy room code</span>
+                  <DropdownMenuShortcut>⇧⌘C</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    mailRoomId();
+                  }}
+                >
+                  <Mail className="mr-2 h-4 w-4" />
+                  <span>Email</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            {currentUserId === lobbyData?.hostId ? (
+              <Button
+                className="font-urban font-bold"
+                onClick={() => startRoom()}
+              >
+                <Swords className="mr-2 h-4 w-4" />
+                Start battle
+              </Button>
+            ) : (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="hover:cursor-not-allowed">
+                    <Button className="font-urban font-bold" disabled>
+                      Start battle
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  Wait for host to start the battle
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </CardFooter>
+        </GlassCard>
+      </BackdropGradient>
     </div>
   );
 };
