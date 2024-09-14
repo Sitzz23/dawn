@@ -1,5 +1,5 @@
 import { SignIn } from "@clerk/nextjs";
-import "./signIn.css";
+import "../../auth.css";
 
 const SignInPage = () => {
   return (
