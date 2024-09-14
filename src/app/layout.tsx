@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning={true}>
       <body
         className={cn(
-          "min-h-screen bg-background antialiased font-figtree",
+          "min-h-screen bg-background antialiased font-figtree bg-black",
           fontUrban.variable,
           fontFigtree.variable,
           fontHeading.variable
