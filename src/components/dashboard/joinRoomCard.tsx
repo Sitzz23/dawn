@@ -2,7 +2,6 @@
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import {
-  Card,
   CardContent,
   CardDescription,
   CardFooter,
@@ -19,9 +18,11 @@ import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import useApiMutation from "@/hooks/useApiMutation";
 import useUserStore from "@/store/userStore";
-import { useMutation } from "convex/react";
 import { Id } from "../../../convex/_generated/dataModel";
 import useQuestionStore from "@/store/questionsStore";
+import GlassCard from "../shared/glassCard";
+import BackdropGradient from "../shared/backdropGradient";
+import GradientText from "../shared/layout/gradientText";
 
 const JoinRoomCard = () => {
   const router = useRouter();
@@ -101,48 +102,56 @@ const JoinRoomCard = () => {
   };
 
   return (
-    <Card className="w-[350px] flex flex-col">
-      <CardHeader>
-        <CardTitle>Enter the battle</CardTitle>
-        <CardDescription>
-          Challenge awaits! Join an existing battle.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="flex-grow">
-        <form onSubmit={handleSubmit}>
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="battleCode">Battle code</Label>
-              <Input
-                id="battleCode"
-                placeholder="Enter the room Id"
-                value={battleCode}
-                onChange={handleInputChange}
-                className={cn(
-                  battleCodeError && "border-red-500 focus-visible:ring-red-500"
-                )}
-              />
+    <BackdropGradient
+      className="w-4/12 h-2/6 opacity-40"
+      container="flex flex-col items-center w-fit"
+    >
+      <GlassCard className="w-[380px] flex flex-col h-full">
+        <CardHeader>
+          <CardTitle>
+            <GradientText element="H2"> Enter the battle</GradientText>
+          </CardTitle>
+          <CardDescription>
+            Challenge awaits! Join an existing battle.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="h-full">
+          <form onSubmit={handleSubmit}>
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="battleCode">Battle code</Label>
+                <Input
+                  id="battleCode"
+                  placeholder="Enter the room Id"
+                  value={battleCode}
+                  onChange={handleInputChange}
+                  className={cn(
+                    battleCodeError &&
+                      "border-red-500 focus-visible:ring-red-500"
+                  )}
+                />
+              </div>
             </div>
-          </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-between ">
-        <Button
-          variant="outline"
-          className="font-urban font-bold"
-          onClick={handleCancel}
-        >
-          Cancel
-        </Button>
-        <Button
-          className="font-urban font-bold"
-          onClick={handleSubmit}
-          disabled={pending}
-        >
-          Engage!
-        </Button>
-      </CardFooter>
-    </Card>
+          </form>
+        </CardContent>
+        <CardFooter className="flex justify-between ">
+          <Button
+            variant="outline"
+            className="font-urban font-bold"
+            onClick={handleCancel}
+          >
+            Cancel
+          </Button>
+          <Button
+            className="font-urban font-bold"
+            onClick={handleSubmit}
+            disabled={pending}
+          >
+            Engage!
+          </Button>
+        </CardFooter>
+      </GlassCard>
+    </BackdropGradient>
   );
 };
 
