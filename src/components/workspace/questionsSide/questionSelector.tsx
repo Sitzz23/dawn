@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -20,6 +20,7 @@ import { Separator } from "@/components/ui/separator";
 export default function QuestionSelector() {
   const { questions, selectedQuestionId, setSelectedQuestionId } =
     useQuestionStore();
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (questions && questions.length > 0 && !selectedQuestionId) {
@@ -31,8 +32,13 @@ export default function QuestionSelector() {
     return <EmptySelector />;
   }
 
+  const handleQuestionSelect = (id: Id<"questions">) => {
+    setSelectedQuestionId(id);
+    setIsOpen(false);
+  };
+
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <div className="flex items-center rounded-md hover:bg-accent/70 transition-colors">
         <SheetTrigger asChild>
           <Button
@@ -72,17 +78,19 @@ export default function QuestionSelector() {
         </SheetHeader>
         <ScrollArea className="h-[calc(100vh-100px)] mt-4">
           <div className="space-y-2">
-            {questions.map((q) => (
-              <Button
-                key={q._id}
-                variant={q._id === selectedQuestionId ? "default" : "ghost"}
-                className="w-full justify-start"
-                onClick={() => {
-                  setSelectedQuestionId(q._id as Id<"questions">);
-                }}
-              >
-                {q.title}
-              </Button>
+            {questions.map((q, index) => (
+              <div key={q._id}>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => handleQuestionSelect(q._id as Id<"questions">)}
+                >
+                  <div className="flex items-start">
+                    <span className="font-semibold mr-2">{index + 1}.</span>
+                    <span className="text-left">{q.title}</span>
+                  </div>
+                </Button>
+              </div>
             ))}
           </div>
         </ScrollArea>
