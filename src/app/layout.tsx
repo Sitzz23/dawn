@@ -9,6 +9,7 @@ import { ConvexClientProvider } from "@/lib/clerkProvider";
 import FloatingReportButton from "@/components/shared/reportButton";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export const metadata: Metadata = {
   title: "Dawn",
@@ -38,7 +39,7 @@ export default function RootLayout({
         >
           <ConvexClientProvider>
             {/* <SocketProvider> */}
-            {children}
+            <TooltipProvider delayDuration={100}>{children}</TooltipProvider>
             <Toaster />
             <FloatingReportButton />
             {/* </SocketProvider> */}
