@@ -24,25 +24,31 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
   }, [lobbyData, setRoom]);
 
   return (
-    <div className="h-screen w-full pl-[56px] flex overflow-hidden">
+    <div className="h-screen w-full pl-[56px] flex overflow-hidden pb-2">
       <WorkspaceSidebar />
       <div className="flex-1 flex flex-col w-full h-full">
         <WorkspaceHeader questionIds={lobbyData?.questions} />
         <main className="flex-1 overflow-hidden">
           <ResizablePanelGroup direction="horizontal" className="h-full">
-            <ResizablePanel defaultSize={38} minSize={30}>
+            <ResizablePanel defaultSize={38} minSize={30} className="pr-1">
               <ResizablePanelGroup direction={"vertical"}>
-                <ResizablePanel defaultSize={75} minSize={40}>
+                <ResizablePanel defaultSize={75} minSize={40} className="pb-1">
                   <QuestionDisplay />
                 </ResizablePanel>
-                <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={25} minSize={20}>
+                <ResizableHandle
+                  withHandle
+                  className="opacity-0 hover:opacity-100 transition-opacity duration-100"
+                />
+                <ResizablePanel defaultSize={25} minSize={20} className="pt-1">
                   <TestCase />
                 </ResizablePanel>
               </ResizablePanelGroup>
             </ResizablePanel>
-            <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={62} className="p-4" minSize={55}>
+            <ResizableHandle
+              withHandle
+              className="opacity-0 hover:opacity-100 transition-opacity duration-100"
+            />
+            <ResizablePanel defaultSize={62} className="pl-1" minSize={45}>
               <EditorSide />
             </ResizablePanel>
           </ResizablePanelGroup>

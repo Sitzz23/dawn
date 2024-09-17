@@ -18,7 +18,7 @@ const QuestionDisplay: React.FC = () => {
   if (!selectedQuestion) return <Empty />;
 
   return (
-    <div className="p-6 flex flex-col h-full overflow-y-scroll">
+    <div className="p-6 flex flex-col h-full overflow-y-scroll bg-white/5 rounded-xl">
       <div className="pb-4">
         <div className="mb-3 flex justify-between items-center">
           <h2 className="text-2xl font-bold text-pretty">
