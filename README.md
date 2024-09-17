@@ -35,8 +35,11 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details. -->
 
-## Repo Rules
+## A website for engaging in multiplayer coding battles
 
-font-heading for major headings
-font-figtree for body and regular written content
-font-urban for CTA and other things
+Dawn lets programmers compete or collaborate in virtual rooms, solving coding challenges in real-time.
+Team up with friends, or match with random opponents to test and improve your coding skills.
+
+# Tech-stack used:
+
+Nextjs, Typescript, Tailwind CSS, Convex backend, Socket.io, Judge0
