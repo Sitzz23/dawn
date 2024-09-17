@@ -28,7 +28,7 @@ const WorkspaceHeader = ({
   }, [questionData, setQuestions]);
 
   return (
-    <header className="flex h-[57px] items-center gap-1  p-2 justify-between relative">
+    <header className="flex h-[50px] items-center gap-1 px-2 justify-between relative">
       <QuestionSelector />
       {room && room.startedAt ? (
         <RoomTimer

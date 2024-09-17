@@ -30,7 +30,7 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
         <WorkspaceHeader questionIds={lobbyData?.questions} />
         <main className="flex-1 overflow-hidden">
           <ResizablePanelGroup direction="horizontal" className="h-full">
-            <ResizablePanel defaultSize={38} minSize={30} className="pr-1">
+            <ResizablePanel defaultSize={38} minSize={30} className="pr-1 pt-1">
               <ResizablePanelGroup direction={"vertical"}>
                 <ResizablePanel defaultSize={75} minSize={40} className="pb-1">
                   <QuestionDisplay />
@@ -48,7 +48,7 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
               withHandle
               className="opacity-0 hover:opacity-100 transition-opacity duration-100"
             />
-            <ResizablePanel defaultSize={62} className="pl-1" minSize={45}>
+            <ResizablePanel defaultSize={62} className="pl-1 pt-1" minSize={45}>
               <EditorSide />
             </ResizablePanel>
           </ResizablePanelGroup>

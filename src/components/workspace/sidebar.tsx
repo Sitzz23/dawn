@@ -22,7 +22,7 @@ const WorkspaceSidebar = () => {
   });
   return (
     <aside className="inset-y fixed left-0 z-20 flex h-full flex-col">
-      <div className="p-2">
+      <div className="px-2 pt-1">
         <Button variant="ghost" size="icon" aria-label="Home">
           <p className="text-2xl">✦</p>
         </Button>
