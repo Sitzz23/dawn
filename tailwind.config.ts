@@ -24,8 +24,16 @@ const config = {
         "2xl": "1400px",
       },
     },
+    // backgroundImage: {
+    //   "radial-gradient": "radial-gradient(circle at 50% 40%, white, black)",
+    // },
     extend: {
       colors: {
+        themeBlack: "#09090B",
+        themeGray: "#27272A",
+        themeDarkGray: "#27272A",
+        themeTextGray: "#B4B0AE",
+        themeTextWhite: "#F7ECE9",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -61,7 +69,6 @@ const config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
         heading: ["var(--font-heading)", ...fontFamily.sans],
         figtree: ["var(--font-figtree)", ...fontFamily.sans],
         urban: ["var(--font-urban)", ...fontFamily.sans],

@@ -6,6 +6,7 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { useConvexAuth, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import useUserStore from "@/store/userStore";
+import { LogIn } from "lucide-react";
 
 const Navbar = () => {
   const { isAuthenticated } = useConvexAuth();
@@ -34,9 +35,12 @@ const Navbar = () => {
           <UserButton />
         </SignedIn>
         <SignedOut>
-          <Button className="font-urban font-bold" asChild variant={"outline"}>
-            <Link href={"/sign-in"}>Sign In</Link>
-          </Button>
+          <Link href={"/sign-in"}>
+            <Button className="font-urban font-bold" variant={"outline"}>
+              <LogIn className="mr-2 h-4 w-4" />
+              Sign In
+            </Button>
+          </Link>
         </SignedOut>
       </div>
     </div>

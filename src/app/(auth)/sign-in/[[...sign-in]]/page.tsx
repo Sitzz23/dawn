@@ -1,5 +1,12 @@
 import { SignIn } from "@clerk/nextjs";
+import "../../auth.css";
 
-export default function Page() {
-  return <SignIn />;
-}
+const SignInPage = () => {
+  return (
+    <>
+      <SignIn />
+    </>
+  );
+};
+
+export default SignInPage;

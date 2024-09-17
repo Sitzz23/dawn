@@ -28,15 +28,8 @@ const WorkspaceHeader = ({
   }, [questionData, setQuestions]);
 
   return (
-    <header className="flex h-[57px] items-center gap-1  border-b border-secondary bg-background  p-2 justify-between relative">
-      {/* <h1 className="text-xl font-semibold">
-            {user?.firstName}&apos;s workspace
-          </h1> */}
+    <header className="flex h-[50px] items-center gap-1 px-2 justify-between relative">
       <QuestionSelector />
-
-      {/* <h2 className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-[calc(50%-30px)] capitalize font-semibold">
-        Room {room?.name}
-      </h2> */}
       {room && room.startedAt ? (
         <RoomTimer
           serverTimestamp={room.startedAt}

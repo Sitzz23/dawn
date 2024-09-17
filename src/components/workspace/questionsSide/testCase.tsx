@@ -11,7 +11,7 @@ const TestCase = () => {
   if (!selectedQuestion) return <EmptyTestCases />;
 
   return (
-    <div className="p-6 h-full overflow-y-auto">
+    <div className="p-6 h-full overflow-y-auto bg-white/5 rounded-xl">
       <Tabs defaultValue="0" className="w-full">
         <TabsList className={`flex gap-2 justify-start`}>
           {selectedQuestion.testCases.map((_, index) => (

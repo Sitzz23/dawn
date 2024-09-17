@@ -3,7 +3,6 @@
 import type React from "react";
 import { useState, type ChangeEvent } from "react";
 import {
-  Card,
   CardContent,
   CardDescription,
   CardFooter,
@@ -27,6 +26,9 @@ import useApiMutation from "@/hooks/useApiMutation";
 import { useRouter } from "next/navigation";
 import useUserStore from "@/store/userStore";
 import useQuestionStore from "@/store/questionsStore";
+import GlassCard from "../shared/glassCard";
+import GradientText from "../shared/layout/gradientText";
+import BackdropGradient from "../shared/backdropGradient";
 
 interface FormData {
   battleName: string;
@@ -112,101 +114,109 @@ const BattleCreationForm: React.FC = () => {
   };
 
   return (
-    <Card className="w-[450px]">
-      <CardHeader>
-        <CardTitle>Create a battle</CardTitle>
-        <CardDescription>Set the stage for an epic battle!</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="battleName">Battle Name</Label>
-              <Input
-                id="battleName"
-                placeholder="Enter battle name"
-                value={formData.battleName}
-                onChange={handleInputChange}
-                className={cn(
-                  battleNameError && "border-red-500 focus-visible:ring-red-500"
-                )}
-              />
+    <BackdropGradient
+      className="w-4/12 h-2/6 opacity-80"
+      container="flex flex-col items-center w-fit "
+    >
+      <GlassCard className="w-[450px]">
+        <CardHeader>
+          <CardTitle>
+            <GradientText element="H2">Create a battle</GradientText>
+          </CardTitle>
+          <CardDescription>Set the stage for an epic battle!</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="battleName">Battle Name</Label>
+                <Input
+                  id="battleName"
+                  placeholder="Enter battle name"
+                  value={formData.battleName}
+                  onChange={handleInputChange}
+                  className={cn(
+                    battleNameError &&
+                      "border-red-500 focus-visible:ring-red-500"
+                  )}
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="maxPlayers">Max Players</Label>
+                <Select
+                  value={formData.maxPlayers}
+                  onValueChange={(value) =>
+                    handleSelectChange("maxPlayers", value)
+                  }
+                >
+                  <SelectTrigger id="maxPlayers">
+                    <SelectValue placeholder="Select players" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="2">2 Players</SelectItem>
+                    <SelectItem value="4">4 Players</SelectItem>
+                    <SelectItem value="6">6 Players</SelectItem>
+                    <SelectItem value="8">8 Players</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="roomDuration">Room Duration</Label>
+                <Select
+                  value={formData.roomDuration}
+                  onValueChange={(value) =>
+                    handleSelectChange("roomDuration", value)
+                  }
+                >
+                  <SelectTrigger id="roomDuration">
+                    <SelectValue placeholder="Select duration" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="15">15 minutes</SelectItem>
+                    <SelectItem value="30">30 minutes</SelectItem>
+                    <SelectItem value="45">45 minutes</SelectItem>
+                    <SelectItem value="60">1 hour</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="visibility">Room visibility</Label>
+                <Select
+                  value={formData.visibility}
+                  onValueChange={(value) =>
+                    handleSelectChange("visibility", value)
+                  }
+                >
+                  <SelectTrigger id="visibility">
+                    <SelectValue placeholder="Select visibility" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="public">Public</SelectItem>
+                    <SelectItem value="private">Private</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="maxPlayers">Max Players</Label>
-              <Select
-                value={formData.maxPlayers}
-                onValueChange={(value) =>
-                  handleSelectChange("maxPlayers", value)
-                }
-              >
-                <SelectTrigger id="maxPlayers">
-                  <SelectValue placeholder="Select players" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="2">2 Players</SelectItem>
-                  <SelectItem value="4">4 Players</SelectItem>
-                  <SelectItem value="6">6 Players</SelectItem>
-                  <SelectItem value="8">8 Players</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="roomDuration">Room Duration</Label>
-              <Select
-                value={formData.roomDuration}
-                onValueChange={(value) =>
-                  handleSelectChange("roomDuration", value)
-                }
-              >
-                <SelectTrigger id="roomDuration">
-                  <SelectValue placeholder="Select duration" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="15">15 minutes</SelectItem>
-                  <SelectItem value="30">30 minutes</SelectItem>
-                  <SelectItem value="45">45 minutes</SelectItem>
-                  <SelectItem value="60">1 hour</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="visibility">Room visibility</Label>
-              <Select
-                value={formData.visibility}
-                onValueChange={(value) =>
-                  handleSelectChange("visibility", value)
-                }
-              >
-                <SelectTrigger id="visibility">
-                  <SelectValue placeholder="Select visibility" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="public">Public</SelectItem>
-                  <SelectItem value="private">Private</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button
-          variant="outline"
-          className="font-urban font-bold"
-          onClick={handleCancel}
-        >
-          Cancel
-        </Button>
-        <Button
-          disabled={pending}
-          className="font-urban font-bold"
-          onClick={handleSubmit}
-        >
-          Create Battle
-        </Button>
-      </CardFooter>
-    </Card>
+          </form>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Button
+            variant="outline"
+            className="font-urban font-bold"
+            onClick={handleCancel}
+          >
+            Cancel
+          </Button>
+          <Button
+            disabled={pending}
+            className="font-urban font-bold"
+            onClick={handleSubmit}
+          >
+            Create Battle
+          </Button>
+        </CardFooter>
+      </GlassCard>
+    </BackdropGradient>
   );
 };
 
