@@ -30,7 +30,6 @@ const WorkspaceHeader = ({
   return (
     <header className="flex h-[57px] items-center gap-1  p-2 justify-between relative">
       <QuestionSelector />
-
       {room && room.startedAt ? (
         <RoomTimer
           serverTimestamp={room.startedAt}
