@@ -3,11 +3,12 @@ import Link from "next/link";
 import GradientText from "@/components/shared/layout/gradientText";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { BadgePlus, CirclePlus } from "lucide-react";
+import { SphereMask } from "@/components/ui/sphereMask";
 
 export default function Home() {
   return (
     <>
-      <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
+      <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32 max-h-[calc(100vh-6rem)] overflow-clip">
         <div className="container flex max-w-[64rem] flex-col items-center gap-5 text-center">
           <GradientText
             className="text-[35px] md:text-[40px] lg:text-[55px] xl:text-[70px] 2xl:text-[80px] leading-tight font-semibold text-pretty"
@@ -52,6 +53,7 @@ export default function Home() {
             </SignedIn>
           </div>
         </div>
+        <SphereMask />
       </section>
     </>
   );
