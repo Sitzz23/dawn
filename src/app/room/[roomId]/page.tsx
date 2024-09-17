@@ -138,7 +138,7 @@ const Lobby = ({ params: { roomId } }: { params: { roomId: Id<"room"> } }) => {
         )}
       </div>
       <BackdropGradient
-        className="w-4/12 h-2/6 opacity-40"
+        className="w-4/12 h-2/6 opacity-60"
         container="flex flex-col items-center"
       >
         <GlassCard className="w-[50%]">

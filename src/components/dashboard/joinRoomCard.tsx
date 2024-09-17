@@ -103,7 +103,7 @@ const JoinRoomCard = () => {
 
   return (
     <BackdropGradient
-      className="w-4/12 h-2/6 opacity-40"
+      className="w-4/12 h-2/6 opacity-80"
       container="flex flex-col items-center w-fit"
     >
       <GlassCard className="w-[380px] flex flex-col h-full">
