@@ -13,9 +13,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
           className="w-4/12 h-2/6 opacity-40"
           container="flex flex-col items-center"
         >
-          <GlassCard className="xs:w-full md:w-7/12 lg:w-5/12 xl:w-4/12 p-7 mt-8">
-            {children}
-          </GlassCard>
+          <GlassCard className=" p-7 mt-8">{children}</GlassCard>
         </BackdropGradient>
       </div>
     </div>
