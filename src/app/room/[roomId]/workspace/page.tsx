@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "convex/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { api } from "../../../../../convex/_generated/api";
 import WorkspaceSidebar from "@/components/workspace/sidebar";
 
@@ -18,6 +18,7 @@ import TestCase from "@/components/workspace/questionsSide/testCase";
 const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
   const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
   const setRoom = useRoomStore((state) => state.setRoom);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     if (lobbyData) setRoom(lobbyData);
@@ -39,8 +40,26 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
                   withHandle
                   className="opacity-0 hover:opacity-100 transition-opacity duration-100"
                 />
-                <ResizablePanel defaultSize={25} minSize={20} className="pt-1">
-                  <TestCase />
+                <ResizablePanel
+                  defaultSize={25}
+                  minSize={20}
+                  className="pt-1"
+                  collapsible
+                  collapsedSize={7}
+                  onCollapse={() => {
+                    setIsCollapsed(true);
+                  }}
+                  onResize={() => {
+                    setIsCollapsed(false);
+                  }}
+                >
+                  {isCollapsed ? (
+                    <div className="bg-white/5 rounded-lg p-1 h-full px-6 pt-4">
+                      <span className="font-bold">Test cases</span>
+                    </div>
+                  ) : (
+                    <TestCase />
+                  )}
                 </ResizablePanel>
               </ResizablePanelGroup>
             </ResizablePanel>
