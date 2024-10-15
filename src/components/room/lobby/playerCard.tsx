@@ -1,3 +1,4 @@
+import GradientText from "@/components/shared/layout/gradientText";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,9 +22,12 @@ export const PlayerCard: React.FC<{
       </Avatar>
       <div className="flex-grow">
         {isHost ? (
-          <span className="bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent font-semibold">
+          // <span className="bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent font-semibold">
+          //   {player.name}
+          // </span>
+          <GradientText className="font-heading pb-1" element="H2">
             {player.name}
-          </span>
+          </GradientText>
         ) : (
           <p className="font-semibold">{player.name}</p>
         )}
