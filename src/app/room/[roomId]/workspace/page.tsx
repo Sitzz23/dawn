@@ -18,7 +18,7 @@ import TestCase from "@/components/workspace/questionsSide/testCase";
 const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
   const lobbyData = useQuery(api.lobby.getLobbyDetails, { roomId } as any);
   const setRoom = useRoomStore((state) => state.setRoom);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   useEffect(() => {
     if (lobbyData) setRoom(lobbyData);
@@ -36,10 +36,7 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
                 <ResizablePanel defaultSize={75} minSize={40} className="pb-1">
                   <QuestionDisplay />
                 </ResizablePanel>
-                <ResizableHandle
-                  withHandle
-                  className="opacity-0 hover:opacity-100 transition-opacity duration-100"
-                />
+                <ResizableHandle className="mx-auto max-w-[40px] py-[2px] rounded-full" />
                 <ResizablePanel
                   defaultSize={25}
                   minSize={20}
@@ -63,10 +60,7 @@ const Workspace = ({ params: { roomId } }: { params: { roomId: string } }) => {
                 </ResizablePanel>
               </ResizablePanelGroup>
             </ResizablePanel>
-            <ResizableHandle
-              withHandle
-              className="opacity-0 hover:opacity-100 transition-opacity duration-100"
-            />
+            <ResizableHandle className="my-auto h-[40px] px-[2px] rounded-full" />
             <ResizablePanel defaultSize={62} className="pl-1 pt-1" minSize={45}>
               <EditorSide />
             </ResizablePanel>
