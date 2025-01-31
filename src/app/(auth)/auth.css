@@ -2,15 +2,31 @@
   font-family: inherit;
 }
 
-.cl-internal-8hu0g .cl-internal-11f0qyb {
-  border: 0px;
-  border-top: 0cm;
+.cl-internal-11f0qyb {
+  border: none;
   border-color: transparent;
   background-color: transparent;
   box-shadow: none;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.cl-internal-19oafnx {
+  border: none;
+  border-color: transparent;
+  background-color: transparent;
+  box-shadow: none;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 .cl-internal-8hu0g {
+  border: none;
+  border-color: transparent;
+  background-color: transparent;
+  box-shadow: none;
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   box-shadow: none !important;
